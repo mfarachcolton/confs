@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Theory Conference Deadlines</title>
+<meta name="description" content="Upcoming submission deadlines for theory of algorithms conferences, with notification dates and locations.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #fbfaf7; --fg: #1d1b19; --muted: #6b665f; --rule: #e4e0d8;
+  --accent: #57068c; --accent-soft: #f1eaf6; --soon: #a3360f; --soon-soft: #fbece5;
+  --serif: "Source Serif 4", Georgia, serif;
+  --sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #161514; --fg: #ece8e1; --muted: #a19b92; --rule: #2f2c29;
+    --accent: #c9a2e6; --accent-soft: #2a2132; --soon: #f0a07e; --soon-soft: #3a2219;
+  }
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--fg); font: 16px/1.5 var(--sans); }
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; text-underline-offset: 3px; }
+.wrap { max-width: 1040px; margin: 0 auto; padding: 0 24px; }
+header { border-bottom: 1px solid var(--rule); }
+header .wrap { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; flex-wrap: wrap; padding-top: 18px; padding-bottom: 14px; }
+.brand { font-weight: 600; font-size: 15px; color: var(--fg); }
+header nav { font-size: 14px; }
+h1 { font: 600 38px/1.15 var(--serif); letter-spacing: -.01em; margin: 48px 0 8px; }
+.lede { color: var(--muted); margin: 0 0 28px; max-width: 680px; }
+table { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; }
+th { text-align: left; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); padding: 10px 12px; border-bottom: 1px solid var(--rule); }
+td { padding: 14px 12px; border-bottom: 1px solid var(--rule); vertical-align: top; }
+td.conf a { font: 600 18px/1.3 var(--serif); }
+td.conf .full { display: block; font-size: 13px; color: var(--muted); margin-top: 2px; }
+.date { white-space: nowrap; }
+.sub { display: block; font-size: 13px; color: var(--muted); white-space: nowrap; }
+.left { display: inline-block; margin-top: 4px; font-size: 12px; font-weight: 600; padding: 1px 8px; border-radius: 999px; background: var(--accent-soft); color: var(--fg); }
+.left.soon { background: var(--soon-soft); color: var(--soon); }
+.est { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); border: 1px solid var(--rule); border-radius: 4px; padding: 0 5px; margin-left: 6px; }
+tr.estimated td.dl .d, tr.estimated td.nt .d { color: var(--muted); font-style: italic; }
+h2 { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: .12em; color: var(--muted); margin: 44px 0 6px; }
+.past td { color: var(--muted); }
+.past td.conf a { color: var(--muted); }
+footer { margin: 48px 0; padding-top: 20px; border-top: 1px solid var(--rule); font-size: 13px; color: var(--muted); }
+.legend { font-size: 13px; color: var(--muted); margin: -14px 0 24px; }
+
+@media (max-width: 720px) {
+  .wrap { padding: 0 16px; }
+  h1 { font-size: 30px; margin-top: 32px; }
+  thead { display: none; }
+  table, tbody, tr, td { display: block; width: 100%; }
+  tr { border-bottom: 1px solid var(--rule); padding: 12px 0; }
+  td { border: 0; padding: 3px 0; }
+  td[data-label]::before { content: attr(data-label); display: inline-block; width: 104px; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); }
+  .sub { display: inline; margin-left: 6px; }
+  td .sub.block { display: block; margin-left: 104px; }
+}
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <a class="brand" href="https://www.farach-colton.com">Martín Farach-Colton</a>
+    <nav><a href="https://www.farach-colton.com">Home</a></nav>
+  </div>
+</header>
+<main class="wrap">
+  <h1>Theory Conference Deadlines</h1>
+  <p class="lede">Upcoming submission deadlines for algorithms and theory conferences, soonest first. Conference names link to the official site. Always confirm dates there before submitting.</p>
+  <p class="legend"><span class="est">est.</span> = call for papers not yet out; dates projected from the previous edition.</p>
+
+  <table id="upcoming">
+    <thead><tr><th>Conference</th><th>Submission deadline</th><th>Notification</th><th>Location</th><th>Conference dates</th></tr></thead>
+    <tbody></tbody>
+  </table>
+
+  <h2 id="past-h">Deadline passed, decisions pending</h2>
+  <table id="past" class="past">
+    <thead><tr><th>Conference</th><th>Submission deadline</th><th>Notification</th><th>Location</th><th>Conference dates</th></tr></thead>
+    <tbody></tbody>
+  </table>
+</main>
+<div class="wrap"><footer id="updated">Loading…</footer></div>
+
+<script>
+(function () {
+  var MONTHS = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+  function parse(d) { if (!d) return null; var p = d.split("-"); return new Date(Date.UTC(+p[0], +p[1] - 1, +p[2])); }
+  function fmt(d) { var x = parse(d); return x ? MONTHS[x.getUTCMonth()] + " " + x.getUTCDate() + ", " + x.getUTCFullYear() : "—"; }
+  function today() { var n = new Date(); return Date.UTC(n.getFullYear(), n.getMonth(), n.getDate()); }
+  function esc(s) { return String(s == null ? "" : s).replace(/[&<>"]/g, function (c) { return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]; }); }
+  function range(r) {
+    if (!r) return "—";
+    var m = String(r).match(/(\d{4}-\d{2}-\d{2})\s*(?:to|–|-{1,2})\s*(\d{4}-\d{2}-\d{2})/);
+    if (!m) return esc(r);
+    var a = parse(m[1]), b = parse(m[2]);
+    if (a.getUTCFullYear() === b.getUTCFullYear() && a.getUTCMonth() === b.getUTCMonth())
+      return MONTHS[a.getUTCMonth()] + " " + a.getUTCDate() + "–" + b.getUTCDate() + ", " + a.getUTCFullYear();
+    return MONTHS[a.getUTCMonth()] + " " + a.getUTCDate() + " – " + MONTHS[b.getUTCMonth()] + " " + b.getUTCDate() + ", " + b.getUTCFullYear();
+  }
+  function row(c, now, isPast) {
+    var est = c.status === "estimated";
+    var days = Math.round((parse(c.deadline) - now) / 864e5);
+    var left = isPast ? "" : '<span class="left' + (days <= 14 ? " soon" : "") + '">' +
+      (days === 0 ? "today" : days === 1 ? "1 day left" : days + " days left") + "</span>";
+    var abs = c.abstract_deadline ? '<span class="sub block">Abstract ' + fmt(c.abstract_deadline) + "</span>" : "";
+    var tz = c.deadline_tz ? '<span class="sub">' + esc(c.deadline_tz) + "</span>" : "";
+    return '<tr class="' + (est ? "estimated" : "") + '">' +
+      '<td class="conf"><a href="' + esc(c.url) + '">' + esc(c.acronym) + " " + esc(c.year) + "</a>" +
+        (est ? '<span class="est">est.</span>' : "") + '<span class="full">' + esc(c.full_name) + "</span></td>" +
+      '<td class="dl date" data-label="Deadline"><span class="d">' + fmt(c.deadline) + "</span>" + tz + abs + (left ? "<br>" + left : "") + "</td>" +
+      '<td class="nt date" data-label="Notification"><span class="d">' + fmt(c.notification) + "</span></td>" +
+      '<td data-label="Location">' + (c.location ? esc(c.location) : "TBA") + "</td>" +
+      '<td class="date" data-label="Dates">' + range(c.conf_dates) + "</td></tr>";
+  }
+  fetch("confs.json", { cache: "no-cache" }).then(function (r) { return r.json(); }).then(function (data) {
+    var now = today();
+    var list = data.conferences.filter(function (c) { return c.deadline; })
+      .sort(function (a, b) { return parse(a.deadline) - parse(b.deadline); });
+    var up = list.filter(function (c) { return parse(c.deadline) >= now; });
+    var past = list.filter(function (c) { return parse(c.deadline) < now && (!c.notification || parse(c.notification) >= now); });
+    document.querySelector("#upcoming tbody").innerHTML = up.map(function (c) { return row(c, now, false); }).join("");
+    document.querySelector("#past tbody").innerHTML = past.map(function (c) { return row(c, now, true); }).join("");
+    if (!past.length) { document.getElementById("past").hidden = true; document.getElementById("past-h").hidden = true; }
+    document.getElementById("updated").textContent = "Last updated " + fmt(data.updated) + ". Updated weekly.";
+  }).catch(function () {
+    document.getElementById("updated").textContent = "Could not load the conference list.";
+  });
+})();
+</script>
+</body>
+</html>
