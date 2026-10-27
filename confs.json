@@ -270,6 +270,36 @@
       "status": "estimated",
       "source": "https://event.ntu.edu.sg/cocoon2026/pages/call-for-papers",
       "notes": "Projected from COCOON 2026."
+    },
+    {
+      "acronym": "PODS",
+      "full_name": "ACM Symposium on Principles of Database Systems",
+      "year": 2027,
+      "url": "https://2027.sigmod.org/calls_papers_pods_research.shtml",
+      "deadline": "2026-12-10",
+      "deadline_tz": "AoE · cycle 2",
+      "abstract_deadline": "2026-12-03",
+      "notification": "2027-02-08",
+      "conf_dates": "2027-06-13 to 2027-06-18",
+      "location": "Huntington Beach, USA",
+      "status": "announced",
+      "source": "https://2027.sigmod.org/calls_papers_pods_research.shtml",
+      "notes": "Initial notification Feb 8; final notification 2027-03-01. Next: PODS 2028 cycle 1, est. 2027-05-30. Co-located with SIGMOD."
+    },
+    {
+      "acronym": "SIGMOD",
+      "full_name": "ACM SIGMOD International Conference on Management of Data",
+      "year": 2028,
+      "url": "https://2028.sigmod.org/",
+      "deadline": "2027-01-17",
+      "deadline_tz": "AoE · round 1",
+      "abstract_deadline": "2027-01-10",
+      "notification": "2027-04-19",
+      "conf_dates": null,
+      "location": null,
+      "status": "estimated",
+      "source": "https://2027.sigmod.org/calls_papers_sigmod_research.shtml",
+      "notes": "All SIGMOD 2027 rounds closed. Projected from SIGMOD 2027 round 1; round 2 est. 2027-04-17."
     }
   ]
 }
