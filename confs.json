@@ -300,6 +300,51 @@
       "status": "estimated",
       "source": "https://2027.sigmod.org/calls_papers_sigmod_research.shtml",
       "notes": "All SIGMOD 2027 rounds closed. Projected from SIGMOD 2027 round 1; round 2 est. 2027-04-17."
+    },
+    {
+      "acronym": "FAST",
+      "full_name": "USENIX Conference on File and Storage Technologies",
+      "year": 2028,
+      "url": "https://www.usenix.org/conferences/calls-for-papers",
+      "deadline": "2027-03-17",
+      "deadline_tz": "AoE · spring cycle",
+      "abstract_deadline": null,
+      "notification": "2027-06-04",
+      "conf_dates": null,
+      "location": null,
+      "status": "estimated",
+      "source": "https://www.usenix.org/sites/default/files/fast27_cfp_031126.pdf",
+      "notes": "Projected from FAST '27 spring cycle; fall cycle est. 2027-09-15. Both FAST '27 cycles closed."
+    },
+    {
+      "acronym": "OSDI",
+      "full_name": "USENIX Symposium on Operating Systems Design and Implementation",
+      "year": 2027,
+      "url": "https://www.usenix.org/conference/osdi27/call-for-papers",
+      "deadline": "2026-12-08",
+      "deadline_tz": "5:59 pm EST",
+      "abstract_deadline": "2026-12-01",
+      "notification": "2027-03-16",
+      "conf_dates": "2027-07-07 to 2027-07-09",
+      "location": "Baltimore, USA",
+      "status": "announced",
+      "source": "https://www.usenix.org/sites/default/files/osdi27_cfp_070726.pdf",
+      "notes": "Preliminary CFP."
+    },
+    {
+      "acronym": "SOSP",
+      "full_name": "ACM Symposium on Operating Systems Principles",
+      "year": 2027,
+      "url": "https://sigops.org/s/conferences/sosp/",
+      "deadline": "2027-04-01",
+      "deadline_tz": "AoE",
+      "abstract_deadline": "2027-03-26",
+      "notification": "2027-07-03",
+      "conf_dates": null,
+      "location": null,
+      "status": "estimated",
+      "source": "https://sigops.org/s/conferences/sosp/2026/cfp.html",
+      "notes": "Now annual; projected from SOSP 2026."
     }
   ]
 }
