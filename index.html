@@ -57,7 +57,7 @@ footer { margin: 48px 0; padding-top: 20px; border-top: 1px solid var(--rule); f
   tr { border-bottom: 1px solid var(--rule); padding: 12px 0; }
   td { border: 0; padding: 3px 0; }
   td[data-label]::before { content: attr(data-label); display: inline-block; width: 104px; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); }
-  .sub { display: inline; margin-left: 6px; }
+  .sub { display: inline; margin-left: 6px; white-space: normal; }
   td .sub.block { display: block; margin-left: 104px; }
 }
 </style>
@@ -71,7 +71,7 @@ footer { margin: 48px 0; padding-top: 20px; border-top: 1px solid var(--rule); f
 </header>
 <main class="wrap">
   <h1>Conference Deadlines</h1>
-  <p class="lede">Upcoming conference submission deadlines, soonest first. Conference names link to the official site. Always confirm dates there before submitting.</p>
+  <p class="lede">Upcoming conference submission deadlines, soonest first, in New York time. Conference names link to the official site. Always confirm dates there before submitting.</p>
   <p class="legend"><span class="est">est.</span> = call for papers not yet out; dates projected from the previous edition. Rebuttal: the period when authors can respond to reviews; — = none listed.</p>
 
   <table id="upcoming">
@@ -108,7 +108,7 @@ footer { margin: 48px 0; padding-top: 20px; border-top: 1px solid var(--rule); f
     var days = Math.round((parse(c.deadline) - now) / 864e5);
     var left = isPast ? "" : '<span class="left' + (days <= 14 ? " soon" : "") + '">' +
       (days === 0 ? "today" : days === 1 ? "1 day left" : days + " days left") + "</span>";
-    var abs = c.abstract_deadline ? '<span class="sub block">Abstract ' + fmt(c.abstract_deadline) + "</span>" : "";
+    var abs = c.abstract_deadline ? '<span class="sub block">Abstract ' + fmt(c.abstract_deadline) + (c.abstract_tz ? ", " + esc(c.abstract_tz) : "") + "</span>" : "";
     var tz = c.deadline_tz ? '<span class="sub">' + esc(c.deadline_tz) + "</span>" : "";
     return '<tr class="' + (est ? "estimated" : "") + '">' +
       '<td class="conf"><a href="' + esc(c.url) + '">' + esc(c.acronym) + " " + esc(c.year) + "</a>" +

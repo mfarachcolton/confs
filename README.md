@@ -14,9 +14,10 @@ Upcoming conference submission deadlines, served by GitHub Pages.
     {
       "acronym": "STOC", "full_name": "ACM Symposium on Theory of Computing", "year": 2027,
       "url": "https://...",            // official site of this edition
-      "deadline": "YYYY-MM-DD",        // full-paper deadline
-      "deadline_tz": "AoE",            // or null
-      "abstract_deadline": null,       // YYYY-MM-DD if separate
+      "deadline": "YYYY-MM-DD",        // full-paper deadline, converted to New York time
+      "deadline_tz": "7:59 am EDT",    // New York time; may add " · cycle 2"
+      "abstract_deadline": null,       // YYYY-MM-DD if separate, New York time
+      "abstract_tz": null,             // e.g. "6:59 am EST", New York time
       "rebuttal": "YYYY-MM-DD to YYYY-MM-DD", // author response period; null if none listed
       "notification": "YYYY-MM-DD",
       "conf_dates": "YYYY-MM-DD to YYYY-MM-DD",
