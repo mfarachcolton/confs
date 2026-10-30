@@ -1,6 +1,6 @@
 # confs.farach-colton.com
 
-Upcoming submission deadlines for theory-of-algorithms conferences, served by GitHub Pages.
+Upcoming conference submission deadlines, served by GitHub Pages.
 
 - `index.html` renders the table from `confs.json` in the browser (sorting, "days left", past-deadline section).
 - `confs.json` is the only file that changes in a weekly update.

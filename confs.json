@@ -1,5 +1,5 @@
 {
-  "updated": "2026-10-27",
+  "updated": "2026-10-30",
   "conferences": [
     {
       "acronym": "STOC",
@@ -122,21 +122,6 @@
       "notes": "Dates/location official; deadlines projected from 2026."
     },
     {
-      "acronym": "SoCG",
-      "full_name": "International Symposium on Computational Geometry",
-      "year": 2027,
-      "url": "https://cgweek27.computational-geometry.org/",
-      "deadline": "2026-12-02",
-      "deadline_tz": "AoE",
-      "abstract_deadline": "2026-11-25",
-      "notification": "2027-02-05",
-      "conf_dates": "2027-06-21 to 2027-06-25",
-      "location": "Bengaluru, India",
-      "status": "announced",
-      "source": "https://cgweek27.computational-geometry.org/contribute/",
-      "notes": "Part of CG Week 2027."
-    },
-    {
       "acronym": "SOSA",
       "full_name": "SIAM Symposium on Simplicity in Algorithms",
       "year": 2028,
@@ -150,21 +135,6 @@
       "status": "estimated",
       "source": "https://sosa27.hotcrp.com/deadlines",
       "notes": "Projected from SOSA 2027. Co-located with SODA."
-    },
-    {
-      "acronym": "ALENEX",
-      "full_name": "SIAM Symposium on Algorithm Engineering and Experiments",
-      "year": 2028,
-      "url": "https://alenex2027.hotcrp.com/deadlines",
-      "deadline": "2027-07-20",
-      "deadline_tz": "AoE",
-      "abstract_deadline": null,
-      "notification": null,
-      "conf_dates": null,
-      "location": null,
-      "status": "estimated",
-      "source": "https://alenex2027.hotcrp.com/deadlines",
-      "notes": "Projected from ALENEX 2027. Co-located with SODA."
     },
     {
       "acronym": "ISAAC",
@@ -240,21 +210,6 @@
       "status": "estimated",
       "source": "https://fun2026.limos.fr/cfp/",
       "notes": "Biennial; projected from FUN 2026."
-    },
-    {
-      "acronym": "SEA",
-      "full_name": "Symposium on Experimental Algorithms",
-      "year": 2027,
-      "url": "https://sea2027.iti.kit.edu/",
-      "deadline": "2027-02-02",
-      "deadline_tz": "AoE",
-      "abstract_deadline": null,
-      "notification": "2027-03-31",
-      "conf_dates": "2027-07-21 to 2027-07-23",
-      "location": "Karlsruhe, Germany",
-      "status": "estimated",
-      "source": "https://sea2027.iti.kit.edu/",
-      "notes": "Site up, deadlines TBD; projected from SEA 2026."
     },
     {
       "acronym": "COCOON",
