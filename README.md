@@ -17,9 +17,10 @@ Upcoming conference submission deadlines, served by GitHub Pages.
       "deadline": "YYYY-MM-DD",        // full-paper deadline
       "deadline_tz": "AoE",            // or null
       "abstract_deadline": null,       // YYYY-MM-DD if separate
+      "rebuttal": "YYYY-MM-DD to YYYY-MM-DD", // author response period; null if none listed
       "notification": "YYYY-MM-DD",
       "conf_dates": "YYYY-MM-DD to YYYY-MM-DD",
-      "location": "City, Country",     // or null
+      "location": "City, Country",     // "City, ST" in the US; or null
       "status": "announced",           // or "estimated" (CFP not out; projected from last year)
       "source": "https://...",         // page the dates were read from
       "notes": ""

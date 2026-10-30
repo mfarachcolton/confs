@@ -42,7 +42,7 @@ td.conf .full { display: block; font-size: 13px; color: var(--muted); margin-top
 .left { display: inline-block; margin-top: 4px; font-size: 12px; font-weight: 600; padding: 1px 8px; border-radius: 999px; background: var(--accent-soft); color: var(--fg); }
 .left.soon { background: var(--soon-soft); color: var(--soon); }
 .est { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); border: 1px solid var(--rule); border-radius: 4px; padding: 0 5px; margin-left: 6px; }
-tr.estimated td.dl .d, tr.estimated td.nt .d { color: var(--muted); font-style: italic; }
+tr.estimated td.dl .d, tr.estimated td.rb .d, tr.estimated td.nt .d { color: var(--muted); font-style: italic; }
 h2 { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: .12em; color: var(--muted); margin: 44px 0 6px; }
 .past td { color: var(--muted); }
 .past td.conf a { color: var(--muted); }
@@ -72,16 +72,16 @@ footer { margin: 48px 0; padding-top: 20px; border-top: 1px solid var(--rule); f
 <main class="wrap">
   <h1>Conference Deadlines</h1>
   <p class="lede">Upcoming conference submission deadlines, soonest first. Conference names link to the official site. Always confirm dates there before submitting.</p>
-  <p class="legend"><span class="est">est.</span> = call for papers not yet out; dates projected from the previous edition.</p>
+  <p class="legend"><span class="est">est.</span> = call for papers not yet out; dates projected from the previous edition. Rebuttal: the period when authors can respond to reviews; — = none listed.</p>
 
   <table id="upcoming">
-    <thead><tr><th>Conference</th><th>Submission deadline</th><th>Notification</th><th>Location</th><th>Conference dates</th></tr></thead>
+    <thead><tr><th>Conference</th><th>Submission deadline</th><th>Rebuttal</th><th>Notification</th><th>Location</th><th>Conference dates</th></tr></thead>
     <tbody></tbody>
   </table>
 
   <h2 id="past-h">Deadline passed, decisions pending</h2>
   <table id="past" class="past">
-    <thead><tr><th>Conference</th><th>Submission deadline</th><th>Notification</th><th>Location</th><th>Conference dates</th></tr></thead>
+    <thead><tr><th>Conference</th><th>Submission deadline</th><th>Rebuttal</th><th>Notification</th><th>Location</th><th>Conference dates</th></tr></thead>
     <tbody></tbody>
   </table>
 </main>
@@ -114,6 +114,7 @@ footer { margin: 48px 0; padding-top: 20px; border-top: 1px solid var(--rule); f
       '<td class="conf"><a href="' + esc(c.url) + '">' + esc(c.acronym) + " " + esc(c.year) + "</a>" +
         (est ? '<span class="est">est.</span>' : "") + '<span class="full">' + esc(c.full_name) + "</span></td>" +
       '<td class="dl date" data-label="Deadline"><span class="d">' + fmt(c.deadline) + "</span>" + tz + abs + (left ? "<br>" + left : "") + "</td>" +
+      '<td class="rb date" data-label="Rebuttal"><span class="d">' + range(c.rebuttal) + "</span></td>" +
       '<td class="nt date" data-label="Notification"><span class="d">' + fmt(c.notification) + "</span></td>" +
       '<td data-label="Location">' + (c.location ? esc(c.location) : "TBA") + "</td>" +
       '<td class="date" data-label="Dates">' + range(c.conf_dates) + "</td></tr>";
