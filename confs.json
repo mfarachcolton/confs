@@ -152,21 +152,6 @@
       "notes": "Projected from ISAAC 2026."
     },
     {
-      "acronym": "WADS",
-      "full_name": "Algorithms and Data Structures Symposium",
-      "year": 2027,
-      "url": "https://wads.org/",
-      "deadline": "2027-02-21",
-      "deadline_tz": "AoE",
-      "abstract_deadline": null,
-      "notification": "2027-04-15",
-      "conf_dates": null,
-      "location": null,
-      "status": "estimated",
-      "source": "https://easychair.org/cfp/wads2025",
-      "notes": "Alternates with SWAT; projected from WADS 2025."
-    },
-    {
       "acronym": "LATIN",
       "full_name": "Latin American Theoretical Informatics Symposium",
       "year": 2028,
