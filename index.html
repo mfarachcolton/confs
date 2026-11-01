@@ -48,6 +48,11 @@ td.conf .full { display: block; font-size: 13px; color: var(--muted); margin-top
 .est { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); border: 1px solid var(--rule); border-radius: 4px; padding: 0 5px; margin-left: 6px; }
 tr.estimated td.dl .d, tr.estimated td.rb .d, tr.estimated td.nt .d { color: var(--muted); font-style: italic; }
 footer { margin: 48px 0; padding-top: 20px; border-top: 1px solid var(--rule); font-size: 13px; color: var(--muted); }
+.hide-btn { display: block; margin-top: 6px; padding: 2px 8px; font: 600 12px/1.4 var(--sans); color: var(--muted); background: transparent; border: 1px solid var(--rule); border-radius: 4px; cursor: pointer; }
+.hide-btn:hover { color: var(--fg); border-color: var(--muted); }
+tr.is-hidden td { opacity: .55; }
+#hidden-bar { margin: 16px 0 0; font-size: 13px; color: var(--muted); }
+#hidden-bar .hide-btn { display: inline-block; margin: 0 0 0 8px; }
 .legend { font-size: 13px; color: var(--muted); margin: -14px 0 24px; }
 
 @media (max-width: 720px) {
@@ -81,6 +86,7 @@ footer { margin: 48px 0; padding-top: 20px; border-top: 1px solid var(--rule); f
     <thead><tr><th>Conference</th><th>Submission deadline</th><th>Rebuttal</th><th>Notification</th><th>Location</th><th>Conference dates</th></tr></thead>
     <tbody></tbody>
   </table>
+  <p id="hidden-bar" hidden></p>
 </main>
 <div class="wrap"><footer id="updated">Loading…</footer></div>
 
@@ -100,7 +106,9 @@ footer { margin: 48px 0; padding-top: 20px; border-top: 1px solid var(--rule); f
       return MONTHS[a.getUTCMonth()] + " " + a.getUTCDate() + "–" + b.getUTCDate() + ", " + a.getUTCFullYear();
     return MONTHS[a.getUTCMonth()] + " " + a.getUTCDate() + " – " + MONTHS[b.getUTCMonth()] + " " + b.getUTCDate() + ", " + b.getUTCFullYear();
   }
-  function row(c, now) {
+  function firstDeadline(c) { return c.abstract_deadline || c.deadline; }
+  function key(c) { return c.acronym + "|" + c.year + "|" + c.deadline; }
+  function row(c, now, isHidden) {
     var est = c.status === "estimated";
     function left(d) {
       var days = Math.round((parse(d) - now) / 864e5);
@@ -118,9 +126,11 @@ footer { margin: 48px 0; padding-top: 20px; border-top: 1px solid var(--rule); f
     var deadlines = c.abstract_deadline ?
       item("Abstract", c.abstract_deadline, c.abstract_tz) + item("Paper", c.deadline, c.deadline_tz) :
       item("", c.deadline, c.deadline_tz);
-    return '<tr class="' + (est ? "estimated" : "") + '">' +
+    var btn = parse(firstDeadline(c)) < now ?
+      '<button type="button" class="hide-btn" data-key="' + esc(key(c)) + '">' + (isHidden ? "Unhide" : "Hide") + "</button>" : "";
+    return '<tr class="' + (est ? "estimated" : "") + (isHidden ? " is-hidden" : "") + '">' +
       '<td class="conf"><a href="' + esc(c.url) + '">' + esc(c.acronym) + " " + esc(c.year) + "</a>" +
-        (est ? '<span class="est">est.</span>' : "") + '<span class="full">' + esc(c.full_name) + "</span></td>" +
+        (est ? '<span class="est">est.</span>' : "") + '<span class="full">' + esc(c.full_name) + "</span>" + btn + "</td>" +
       '<td class="dl date" data-label="Deadline">' + deadlines + "</td>" +
       '<td class="rb date" data-label="Rebuttal"><span class="d">' + range(c.rebuttal) + "</span></td>" +
       '<td class="nt date" data-label="Notification"><span class="d">' + fmt(c.notification) + "</span></td>" +
@@ -132,7 +142,29 @@ footer { margin: 48px 0; padding-top: 20px; border-top: 1px solid var(--rule); f
     var list = data.conferences.filter(function (c) { return c.deadline; })
       .sort(function (a, b) { return parse(a.deadline) - parse(b.deadline); });
     var shown = list.filter(function (c) { return parse(c.deadline) >= now || !c.notification || parse(c.notification) >= now; });
-    document.querySelector("#upcoming tbody").innerHTML = shown.map(function (c) { return row(c, now); }).join("");
+    var STORE = "hiddenConferences", showHidden = false, hiddenKeys = [];
+    try { hiddenKeys = JSON.parse(localStorage.getItem(STORE)) || []; } catch (e) {}
+    function isHidden(c) { return hiddenKeys.indexOf(key(c)) >= 0; }
+    function render() {
+      var rows = shown.filter(function (c) { return showHidden || !isHidden(c); });
+      document.querySelector("#upcoming tbody").innerHTML = rows.map(function (c) { return row(c, now, isHidden(c)); }).join("");
+      var n = shown.filter(isHidden).length, bar = document.getElementById("hidden-bar");
+      if (!n) showHidden = false;
+      bar.hidden = !n;
+      bar.innerHTML = n + " hidden" + '<button type="button" class="hide-btn" id="toggle-hidden">' + (showHidden ? "Don't show" : "Show") + "</button>";
+    }
+    document.querySelector("#upcoming tbody").addEventListener("click", function (e) {
+      var k = e.target.getAttribute && e.target.getAttribute("data-key");
+      if (!k) return;
+      var i = hiddenKeys.indexOf(k);
+      if (i >= 0) hiddenKeys.splice(i, 1); else hiddenKeys.push(k);
+      try { localStorage.setItem(STORE, JSON.stringify(hiddenKeys)); } catch (e2) {}
+      render();
+    });
+    document.getElementById("hidden-bar").addEventListener("click", function (e) {
+      if (e.target.id === "toggle-hidden") { showHidden = !showHidden; render(); }
+    });
+    render();
     document.getElementById("updated").textContent = "Last updated " + fmt(data.updated) + ". Updated weekly.";
   }).catch(function () {
     document.getElementById("updated").textContent = "Could not load the conference list.";
