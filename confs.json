@@ -268,10 +268,10 @@
       "rebuttal": "2027-03-10 to 2027-03-17",
       "notification": "2027-04-19",
       "conf_dates": null,
-      "location": null,
+      "location": "Seoul, South Korea",
       "status": "estimated",
       "source": "https://2027.sigmod.org/calls_papers_sigmod_research.shtml",
-      "notes": "All SIGMOD 2027 rounds closed. Projected from SIGMOD 2027 round 1; round 2 est. 2027-04-17."
+      "notes": "All SIGMOD 2027 rounds closed. Projected from SIGMOD 2027 round 1; round 2 est. 2027-04-17. Location from general co-chair Wook-Shin Han (wscrony.github.io: Seoul, June 2028) and POSTECH lab news; 2028.sigmod.org is not up yet."
     },
     {
       "acronym": "FAST",
