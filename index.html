@@ -42,15 +42,11 @@ td.conf .full { display: block; font-size: 13px; color: var(--muted); margin-top
 .dl-item { display: block; }
 .dl-item + .dl-item { margin-top: 12px; }
 .kind { display: block; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); }
-.kind.abstract { color: var(--accent); }
 .dl-item.done .kind, .dl-item.done .d, .dl-item.done .sub { color: var(--muted); }
 .left { display: block; width: fit-content; margin-top: 4px; font-size: 12px; font-weight: 600; padding: 1px 8px; border-radius: 999px; background: var(--accent-soft); color: var(--fg); }
 .left.soon { background: var(--soon-soft); color: var(--soon); }
 .est { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); border: 1px solid var(--rule); border-radius: 4px; padding: 0 5px; margin-left: 6px; }
 tr.estimated td.dl .d, tr.estimated td.rb .d, tr.estimated td.nt .d { color: var(--muted); font-style: italic; }
-h2 { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: .12em; color: var(--muted); margin: 44px 0 6px; }
-.past td { color: var(--muted); }
-.past td.conf a { color: var(--muted); }
 footer { margin: 48px 0; padding-top: 20px; border-top: 1px solid var(--rule); font-size: 13px; color: var(--muted); }
 .legend { font-size: 13px; color: var(--muted); margin: -14px 0 24px; }
 
@@ -78,16 +74,10 @@ footer { margin: 48px 0; padding-top: 20px; border-top: 1px solid var(--rule); f
 </header>
 <main class="wrap">
   <h1>Conference Deadlines</h1>
-  <p class="lede">Upcoming conference submission deadlines, soonest first, in New York time. Conference names link to the official site. Always confirm dates there before submitting.</p>
+  <p class="lede">Upcoming conference submission deadlines, soonest first, in New York time. Conferences stay listed until their notification date has passed. Conference names link to the official site. Always confirm dates there before submitting.</p>
   <p class="legend"><span class="est">est.</span> = call for papers not yet out; dates projected from the previous edition. Rebuttal: the period when authors can respond to reviews; — = none listed.</p>
 
   <table id="upcoming">
-    <thead><tr><th>Conference</th><th>Submission deadline</th><th>Rebuttal</th><th>Notification</th><th>Location</th><th>Conference dates</th></tr></thead>
-    <tbody></tbody>
-  </table>
-
-  <h2 id="past-h">Deadline passed, decisions pending</h2>
-  <table id="past" class="past">
     <thead><tr><th>Conference</th><th>Submission deadline</th><th>Rebuttal</th><th>Notification</th><th>Location</th><th>Conference dates</th></tr></thead>
     <tbody></tbody>
   </table>
@@ -110,19 +100,18 @@ footer { margin: 48px 0; padding-top: 20px; border-top: 1px solid var(--rule); f
       return MONTHS[a.getUTCMonth()] + " " + a.getUTCDate() + "–" + b.getUTCDate() + ", " + a.getUTCFullYear();
     return MONTHS[a.getUTCMonth()] + " " + a.getUTCDate() + " – " + MONTHS[b.getUTCMonth()] + " " + b.getUTCDate() + ", " + b.getUTCFullYear();
   }
-  function row(c, now, isPast) {
+  function row(c, now) {
     var est = c.status === "estimated";
     function left(d) {
       var days = Math.round((parse(d) - now) / 864e5);
-      if (isPast) return "";
       if (days < 0) return '<span class="left">passed</span>';
       return '<span class="left' + (days <= 14 ? " soon" : "") + '">' +
         (days === 0 ? "today" : days === 1 ? "1 day left" : days + " days left") + "</span>";
     }
     function item(kind, d, tz) {
-      var done = !isPast && parse(d) < now;
+      var done = parse(d) < now;
       return '<span class="dl-item' + (done ? " done" : "") + '">' +
-        (kind ? '<span class="kind ' + kind.toLowerCase() + '">' + kind + "</span>" : "") +
+        (kind ? '<span class="kind">' + kind + "</span>" : "") +
         '<span class="d">' + fmt(d) + "</span>" +
         (tz ? '<span class="sub">' + esc(tz) + "</span>" : "") + left(d) + "</span>";
     }
@@ -142,11 +131,8 @@ footer { margin: 48px 0; padding-top: 20px; border-top: 1px solid var(--rule); f
     var now = today();
     var list = data.conferences.filter(function (c) { return c.deadline; })
       .sort(function (a, b) { return parse(a.deadline) - parse(b.deadline); });
-    var up = list.filter(function (c) { return parse(c.deadline) >= now; });
-    var past = list.filter(function (c) { return parse(c.deadline) < now && (!c.notification || parse(c.notification) >= now); });
-    document.querySelector("#upcoming tbody").innerHTML = up.map(function (c) { return row(c, now, false); }).join("");
-    document.querySelector("#past tbody").innerHTML = past.map(function (c) { return row(c, now, true); }).join("");
-    if (!past.length) { document.getElementById("past").hidden = true; document.getElementById("past-h").hidden = true; }
+    var shown = list.filter(function (c) { return parse(c.deadline) >= now || !c.notification || parse(c.notification) >= now; });
+    document.querySelector("#upcoming tbody").innerHTML = shown.map(function (c) { return row(c, now); }).join("");
     document.getElementById("updated").textContent = "Last updated " + fmt(data.updated) + ". Updated weekly.";
   }).catch(function () {
     document.getElementById("updated").textContent = "Could not load the conference list.";
