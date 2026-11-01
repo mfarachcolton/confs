@@ -48,6 +48,7 @@ td.conf .full { display: block; font-size: 13px; color: var(--muted); margin-top
 .est { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); border: 1px solid var(--rule); border-radius: 4px; padding: 0 5px; margin-left: 6px; }
 tr.estimated td.dl .d, tr.estimated td.rb .d, tr.estimated td.nt .d { color: var(--muted); font-style: italic; }
 footer { margin: 48px 0; padding-top: 20px; border-top: 1px solid var(--rule); font-size: 13px; color: var(--muted); }
+h2 { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: .12em; color: var(--muted); margin: 44px 0 6px; }
 .hide-btn { display: block; margin-top: 6px; padding: 2px 8px; font: 600 12px/1.4 var(--sans); color: var(--muted); background: transparent; border: 1px solid var(--rule); border-radius: 4px; cursor: pointer; }
 .hide-btn:hover { color: var(--fg); border-color: var(--muted); }
 tr.is-hidden td { opacity: .55; }
@@ -79,10 +80,16 @@ tr.is-hidden td { opacity: .55; }
 </header>
 <main class="wrap">
   <h1>Conference Deadlines</h1>
-  <p class="lede">Upcoming conference submission deadlines, soonest first, in New York time. Conferences stay listed until their notification date has passed. Conference names link to the official site. Always confirm dates there before submitting.</p>
+  <p class="lede">Upcoming conference submission deadlines, soonest first, in New York time. Once its submission deadline passes, a conference moves to the second table until its notification date. Conference names link to the official site. Always confirm dates there before submitting.</p>
   <p class="legend"><span class="est">est.</span> = call for papers not yet out; dates projected from the previous edition. Rebuttal: the period when authors can respond to reviews; — = none listed.</p>
 
   <table id="upcoming">
+    <thead><tr><th>Conference</th><th>Submission deadline</th><th>Rebuttal</th><th>Notification</th><th>Location</th><th>Conference dates</th></tr></thead>
+    <tbody></tbody>
+  </table>
+
+  <h2 id="closed-h">Submission deadline passed, decisions pending</h2>
+  <table id="closed">
     <thead><tr><th>Conference</th><th>Submission deadline</th><th>Rebuttal</th><th>Notification</th><th>Location</th><th>Conference dates</th></tr></thead>
     <tbody></tbody>
   </table>
@@ -112,7 +119,7 @@ tr.is-hidden td { opacity: .55; }
     var est = c.status === "estimated";
     function left(d) {
       var days = Math.round((parse(d) - now) / 864e5);
-      if (days < 0) return '<span class="left">passed</span>';
+      if (days < 0) return parse(c.deadline) < now ? "" : '<span class="left">passed</span>';
       return '<span class="left' + (days <= 14 ? " soon" : "") + '">' +
         (days === 0 ? "today" : days === 1 ? "1 day left" : days + " days left") + "</span>";
     }
@@ -147,13 +154,17 @@ tr.is-hidden td { opacity: .55; }
     function isHidden(c) { return hiddenKeys.indexOf(key(c)) >= 0; }
     function render() {
       var rows = shown.filter(function (c) { return showHidden || !isHidden(c); });
-      document.querySelector("#upcoming tbody").innerHTML = rows.map(function (c) { return row(c, now, isHidden(c)); }).join("");
+      function fill(id, list) { document.querySelector("#" + id + " tbody").innerHTML = list.map(function (c) { return row(c, now, isHidden(c)); }).join(""); }
+      var closed = rows.filter(function (c) { return parse(c.deadline) < now; });
+      fill("upcoming", rows.filter(function (c) { return parse(c.deadline) >= now; }));
+      fill("closed", closed);
+      document.getElementById("closed").hidden = document.getElementById("closed-h").hidden = !closed.length;
       var n = shown.filter(isHidden).length, bar = document.getElementById("hidden-bar");
       if (!n) showHidden = false;
       bar.hidden = !n;
       bar.innerHTML = n + " hidden" + '<button type="button" class="hide-btn" id="toggle-hidden">' + (showHidden ? "Don't show" : "Show") + "</button>";
     }
-    document.querySelector("#upcoming tbody").addEventListener("click", function (e) {
+    document.querySelector("main").addEventListener("click", function (e) {
       var k = e.target.getAttribute && e.target.getAttribute("data-key");
       if (!k) return;
       var i = hiddenKeys.indexOf(k);
