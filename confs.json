@@ -1,5 +1,5 @@
 {
-  "updated": "2026-10-30",
+  "updated": "2026-11-01",
   "conferences": [
     {
       "acronym": "STOC",
@@ -226,18 +226,18 @@
       "acronym": "COCOON",
       "full_name": "International Computing and Combinatorics Conference",
       "year": 2027,
-      "url": "https://event.ntu.edu.sg/cocoon2026/",
-      "deadline": "2027-03-05",
+      "url": "https://cocoon2027.github.io/",
+      "deadline": "2027-02-28",
       "deadline_tz": "6:59 am EST",
       "abstract_deadline": null,
       "abstract_tz": null,
       "rebuttal": null,
       "notification": "2027-05-06",
-      "conf_dates": null,
-      "location": null,
-      "status": "estimated",
-      "source": "https://event.ntu.edu.sg/cocoon2026/pages/call-for-papers",
-      "notes": "Projected from COCOON 2026."
+      "conf_dates": "2027-07-18 to 2027-07-21",
+      "location": "Melbourne, Australia",
+      "status": "announced",
+      "source": "https://cocoon2027.github.io/call-for-papers.html",
+      "notes": "Official deadline: 2027-02-27 AoE."
     },
     {
       "acronym": "PODS",
@@ -277,18 +277,18 @@
       "acronym": "FAST",
       "full_name": "USENIX Conference on File and Storage Technologies",
       "year": 2028,
-      "url": "https://www.usenix.org/conferences/calls-for-papers",
+      "url": "https://www.usenix.org/conference/fast28",
       "deadline": "2027-03-18",
       "deadline_tz": "7:59 am EDT · spring cycle",
       "abstract_deadline": null,
       "abstract_tz": null,
       "rebuttal": "2027-05-18 to 2027-05-20",
       "notification": "2027-06-04",
-      "conf_dates": null,
-      "location": null,
+      "conf_dates": "2028-02-28 to 2028-03-01",
+      "location": "Seattle, WA",
       "status": "estimated",
       "source": "https://www.usenix.org/sites/default/files/fast27_cfp_031126.pdf",
-      "notes": "Projected from FAST '27 spring cycle; fall cycle est. 2027-09-15. Both FAST '27 cycles closed."
+      "notes": "Projected from FAST '27 spring cycle; fall cycle est. 2027-09-15. Both FAST '27 cycles closed. Location and conference dates are official (usenix.org/conference/fast28); deadlines are still projected."
     },
     {
       "acronym": "OSDI",
@@ -318,11 +318,11 @@
       "abstract_tz": "7:59 am EDT",
       "rebuttal": "2027-06-22 to 2027-06-24",
       "notification": "2027-07-03",
-      "conf_dates": null,
-      "location": null,
+      "conf_dates": "2027-11-30 to 2027-12-03",
+      "location": "Vancouver, Canada",
       "status": "estimated",
       "source": "https://sigops.org/s/conferences/sosp/2026/cfp.html",
-      "notes": "Now annual; projected from SOSP 2026."
+      "notes": "Now annual; projected from SOSP 2026. Location and conference dates are official (sosp.org). SOSP 2027 is about two months later in the year than SOSP 2026, so the real deadlines may be later than projected."
     },
     {
       "acronym": "NeurIPS",
