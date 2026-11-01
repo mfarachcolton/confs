@@ -136,7 +136,7 @@ tr.is-hidden td { opacity: .55; }
     var btn = parse(firstDeadline(c)) < now ?
       '<button type="button" class="hide-btn" data-key="' + esc(key(c)) + '">' + (isHidden ? "Unhide" : "Hide") + "</button>" : "";
     return '<tr class="' + (est ? "estimated" : "") + (isHidden ? " is-hidden" : "") + '">' +
-      '<td class="conf"><a href="' + esc(c.url) + '">' + esc(c.acronym) + " " + esc(c.year) + "</a>" +
+      '<td class="conf"><a href="' + esc(c.url) + '" target="_blank" rel="noopener">' + esc(c.acronym) + " " + esc(c.year) + "</a>" +
         (est ? '<span class="est">est.</span>' : "") + '<span class="full">' + esc(c.full_name) + "</span>" + btn + "</td>" +
       '<td class="dl date" data-label="Deadline">' + deadlines + "</td>" +
       '<td class="rb date" data-label="Rebuttal"><span class="d">' + range(c.rebuttal) + "</span></td>" +
