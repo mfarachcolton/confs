@@ -41,7 +41,12 @@
             "Richard Wen"
           ]
         }
-      ]
+      ],
+      "hotel": {
+        "name": "Hyatt Regency Atlanta",
+        "url": "https://fcrc.acm.org/for-attendees/hotel-info-2027",
+        "note": "FCRC group rate $205/night until May 3, 2027"
+      }
     },
     {
       "acronym": "FOCS",
@@ -428,7 +433,6 @@
       "location": "Philadelphia, PA",
       "hotel": {
         "name": "Sheraton Philadelphia Downtown",
-        "address": "201 N 17th St, Philadelphia, PA 19103",
         "url": "https://www.siam.org/conferences-events/siam-conferences/soda27/lodging-support/hotel-transportation/",
         "note": "Group rate $156/night until 5 pm ET, Dec 21, 2026"
       },
@@ -469,7 +473,6 @@
       "location": "Huntington Beach, CA",
       "hotel": {
         "name": "Hyatt Regency Huntington Beach Resort and Spa",
-        "address": "21500 Pacific Coast Hwy, Huntington Beach, CA 92648",
         "url": "https://2027.sigmodconf.hosting.acm.org/accomodations.shtml",
         "note": "Group rate and cutoff not posted yet"
       },
@@ -496,7 +499,35 @@
             "Renfei Zhou"
           ]
         }
+      ],
+      "invited": [
+        {
+          "kind": "Tutorial",
+          "title": null,
+          "source": "https://2027.sigmodconf.hosting.acm.org/pods_tutorials.shtml"
+        }
       ]
+    },
+    {
+      "acronym": "ACDA",
+      "year": 2027,
+      "full_name": "SIAM Conference on Applied and Computational Discrete Algorithms (with CSE27)",
+      "url": "https://www.siam.org/conferences-events/siam-conferences/acda27/",
+      "conf_dates": "2027-02-22 to 2027-02-24",
+      "location": "Pittsburgh, PA",
+      "hotel": {
+        "name": "The Westin Pittsburgh",
+        "url": "https://www.siam.org/conferences-events/siam-conferences/acda27/lodging-support/hotel-transportation/",
+        "note": "Group rate from $199/night until Jan 29, 2027"
+      },
+      "source": "CV (https://www.farach-colton.com/cv.pdf); ACDA27 invited speakers not yet posted",
+      "invited": [
+        {
+          "kind": "Keynote",
+          "title": null
+        }
+      ],
+      "papers": []
     }
   ]
 }

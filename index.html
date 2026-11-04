@@ -61,14 +61,18 @@ tr.is-hidden td { opacity: .55; }
 .papers li + li { margin-top: 10px; }
 .papers .title { display: block; font: 600 15px/1.35 var(--serif); }
 .papers .authors { display: block; font-size: 13px; color: var(--muted); }
+.papers .talk { display: block; width: fit-content; margin-top: 3px; font-size: 12px; font-weight: 600; padding: 1px 8px; border-radius: 999px; background: var(--accent-soft); color: var(--fg); }
+.papers .talk.tba { background: none; padding: 0; font-weight: 400; color: var(--muted); font-style: italic; }
+.papers.invited { margin-bottom: 12px; }
+.papers.invited .kind { color: var(--accent); }
+.papers .untitled { font: italic 400 14px var(--sans); color: var(--muted); }
 .papers .num { font: 400 13px var(--sans); color: var(--muted); }
 tr.subs td { padding-top: 0; }
 tr:has(+ tr.subs) td { border-bottom: 0; }
 tr.subs .kind { margin-bottom: 4px; }
 #later-toggle td { padding: 14px 12px; }
 #later-toggle .hide-btn { margin: 0; color: var(--accent); }
-.hotel { display: block; margin-top: 6px; font-size: 13px; }
-.hotel .sub { white-space: normal; }
+td.hotel .sub { white-space: normal; }
 
 @media (max-width: 960px) {
   .wrap { padding: 0 16px; }
@@ -84,8 +88,9 @@ tr.subs .kind { margin-bottom: 4px; }
   td.dl .dl-item:first-of-type { grid-row: 1; }
   td.pp { display: grid; grid-template-columns: 104px 1fr; padding: 6px 0; }
   td.pp .papers { grid-column: 2; }
-  .hotel { margin-left: 104px; }
-  .hotel .sub { display: block; margin-left: 0; }
+  td.hotel { display: grid; grid-template-columns: 104px 1fr; }
+  td.hotel > * { grid-column: 2; }
+  td.hotel .sub { display: block; margin-left: 0; }
 }
 </style>
 </head>
@@ -110,7 +115,7 @@ tr.subs .kind { margin-bottom: 4px; }
 
   <h2 id="closed-h">Submission deadline passed</h2>
   <table id="closed">
-    <thead><tr><th>Conference</th><th>Submission deadline</th><th>Rebuttal</th><th>Notification</th><th>Location</th><th>Conference dates</th></tr></thead>
+    <thead><tr><th>Conference</th><th>Rebuttal</th><th>Notification</th><th>Location</th><th>Hotel</th><th>Conference dates</th></tr></thead>
     <tbody></tbody>
   </table>
   <p id="hidden-bar" hidden></p>
@@ -135,7 +140,14 @@ tr.subs .kind { margin-bottom: 4px; }
   }
   function firstDeadline(c) { return c.abstract_deadline || c.deadline; }
   function key(c) { return c.acronym + "|" + c.year + "|" + c.deadline; }
-  function row(c, now, isHidden) {
+  function hotelCell(c) {
+    var h = c.hotel;
+    if (!h) return '<td data-label="Hotel">—</td>';
+    return '<td class="hotel" data-label="Hotel">' +
+      (h.url ? '<a href="' + esc(h.url) + '" target="_blank" rel="noopener">' + esc(h.name) + "</a>" : esc(h.name)) +
+      (h.note ? '<span class="sub">' + esc(h.note) + "</span>" : "") + "</td>";
+  }
+  function row(c, now, isHidden, closed) {
     var est = c.status === "estimated";
     function left(d) {
       var days = Math.round((parse(d) - now) / 864e5);
@@ -158,18 +170,33 @@ tr.subs .kind { margin-bottom: 4px; }
     return '<tr class="' + (est ? "estimated" : "") + (isHidden ? " is-hidden" : "") + '">' +
       '<td class="conf"><a href="' + esc(c.url) + '" target="_blank" rel="noopener">' + esc(c.acronym) + " " + esc(c.year) + "</a>" +
         (est ? '<span class="est">est.</span>' : "") + '<span class="full">' + esc(c.full_name) + "</span>" + btn + "</td>" +
-      '<td class="dl date" data-label="Deadline">' + deadlines + "</td>" +
+      (closed ? "" : '<td class="dl date" data-label="Deadline">' + deadlines + "</td>") +
       '<td class="rb date" data-label="Rebuttal"><span class="d">' + range(c.rebuttal) + "</span></td>" +
       '<td class="nt date" data-label="Notification"><span class="d">' + fmt(c.notification) + "</span></td>" +
       '<td data-label="Location">' + (c.location ? esc(c.location) : "TBA") + "</td>" +
+      (closed ? hotelCell(c) : "") +
       '<td class="date" data-label="Dates">' + range(c.conf_dates) + "</td></tr>" + subsRow(c, isHidden);
   }
-  function paperList(list) {
+  function paperList(list, talk) {
     return '<ul class="papers">' + list.map(function (p) {
       var t = p.url ? '<a href="' + esc(p.url) + '" target="_blank" rel="noopener">' + esc(p.title) + "</a>" : esc(p.title);
       return '<li><span class="title">' + t + (p.number ? ' <span class="num">#' + esc(p.number) + "</span>" : "") +
-        '</span><span class="authors">' + esc(p.authors.join(", ")) + "</span></li>";
+        '</span><span class="authors">' + esc(p.authors.join(", ")) + "</span>" + (talk ? talkLine(p.talk) : "") + "</li>";
     }).join("") + "</ul>";
+  }
+  function invitedList(list) {
+    if (!list || !list.length) return "";
+    return '<ul class="papers invited">' + list.map(function (v) {
+      return '<li><span class="kind">' + esc(v.kind || "Invited talk") + '</span><span class="title">' +
+        (v.title ? esc(v.title) : '<span class="untitled">Title not posted yet</span>') + "</span>" + talkLine(v.talk) + "</li>";
+    }).join("") + "</ul>";
+  }
+  function talkLine(t) {
+    if (!t || !t.date) return '<span class="talk tba">Talk: schedule not posted yet</span>';
+    var d = parse(t.date);
+    return '<span class="talk">Talk: ' + ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"][d.getUTCDay()] + ", " +
+      MONTHS[d.getUTCMonth()] + " " + d.getUTCDate() + (t.time ? ", " + esc(t.time) : "") +
+      (t.session ? " · " + esc(t.session) : "") + (t.room ? " · " + esc(t.room) : "") + "</span>";
   }
   function subsRow(c, isHidden) {
     if (!c.my_submissions || !c.my_submissions.length) return "";
@@ -178,15 +205,11 @@ tr.subs .kind { margin-bottom: 4px; }
   }
   function endDate(r) { var m = String(r || "").match(/\d{4}-\d{2}-\d{2}/g); return m ? parse(m[m.length - 1]) : null; }
   function mineRow(c) {
-    var h = c.hotel;
-    var hotel = h ? '<span class="hotel">' + (h.url ? '<a href="' + esc(h.url) + '" target="_blank" rel="noopener">' + esc(h.name) + "</a>" : esc(h.name)) +
-      (h.address ? '<span class="sub">' + esc(h.address) + "</span>" : "") +
-      (h.note ? '<span class="sub">' + esc(h.note) + "</span>" : "") + "</span>" : "";
     return '<tr class="mine-row">' +
       '<td class="conf"><a href="' + esc(c.url) + '" target="_blank" rel="noopener">' + esc(c.acronym) + " " + esc(c.year) + "</a>" +
-        '<span class="mine">My papers</span><span class="full">' + esc(c.full_name) + "</span></td>" +
-      '<td class="pp" colspan="3" data-label="Papers">' + paperList(c.papers || []) + "</td>" +
-      '<td data-label="Location">' + (c.location ? esc(c.location) : "TBA") + hotel + "</td>" +
+        '<span class="mine">' + (c.papers && c.papers.length ? "My papers" : "Invited talk") + '</span><span class="full">' + esc(c.full_name) + "</span></td>" +
+      '<td class="pp" colspan="2" data-label="' + (c.papers && c.papers.length ? "Papers" : "Talk") + '">' + invitedList(c.invited) + paperList(c.papers || [], true) + "</td>" +
+      '<td data-label="Location">' + (c.location ? esc(c.location) : "TBA") + "</td>" + hotelCell(c) +
       '<td class="date" data-label="Dates">' + range(c.conf_dates) + "</td></tr>";
   }
   fetch("confs.json", { cache: "no-cache" }).then(function (r) { return r.json(); }).then(function (data) {
@@ -203,7 +226,7 @@ tr.subs .kind { margin-bottom: 4px; }
     function isHidden(c) { return hiddenKeys.indexOf(key(c)) >= 0; }
     function render() {
       var rows = shown.filter(function (c) { return showHidden || !isHidden(c); });
-      function fill(id, list) { document.querySelector("#" + id + " tbody").innerHTML = list.map(function (c) { return row(c, now, isHidden(c)); }).join(""); }
+      function fill(id, list) { document.querySelector("#" + id + " tbody").innerHTML = list.map(function (c) { return row(c, now, isHidden(c), true); }).join(""); }
       var closed = rows.filter(function (c) { return parse(c.deadline) < now; });
       var open = rows.filter(function (c) { return parse(c.deadline) >= now; });
       function html(list) { return list.map(function (c) { return row(c, now, isHidden(c)); }).join(""); }
