@@ -22,6 +22,7 @@
   }
 }
 * { box-sizing: border-box; }
+[hidden] { display: none !important; }
 body { margin: 0; background: var(--bg); color: var(--fg); font: 16px/1.5 var(--sans); }
 a { color: var(--accent); text-decoration: none; }
 a:hover { text-decoration: underline; text-underline-offset: 3px; }
@@ -55,8 +56,21 @@ tr.is-hidden td { opacity: .55; }
 #hidden-bar { margin: 16px 0 0; font-size: 13px; color: var(--muted); }
 #hidden-bar .hide-btn { display: inline-block; margin: 0 0 0 8px; }
 .legend { font-size: 13px; color: var(--muted); margin: -14px 0 24px; }
+.mine { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; color: var(--accent); background: var(--accent-soft); border-radius: 4px; padding: 0 5px; margin-left: 6px; }
+.papers { margin: 0; padding: 0; list-style: none; }
+.papers li + li { margin-top: 10px; }
+.papers .title { display: block; font: 600 15px/1.35 var(--serif); }
+.papers .authors { display: block; font-size: 13px; color: var(--muted); }
+.papers .num { font: 400 13px var(--sans); color: var(--muted); }
+tr.subs td { padding-top: 0; }
+tr:has(+ tr.subs) td { border-bottom: 0; }
+tr.subs .kind { margin-bottom: 4px; }
+#later-toggle td { padding: 14px 12px; }
+#later-toggle .hide-btn { margin: 0; color: var(--accent); }
+.hotel { display: block; margin-top: 6px; font-size: 13px; }
+.hotel .sub { white-space: normal; }
 
-@media (max-width: 720px) {
+@media (max-width: 960px) {
   .wrap { padding: 0 16px; }
   h1 { font-size: 30px; margin-top: 32px; }
   thead { display: none; }
@@ -68,6 +82,10 @@ tr.is-hidden td { opacity: .55; }
   td.dl { display: grid; grid-template-columns: 104px 1fr; }
   td.dl .dl-item { grid-column: 2; }
   td.dl .dl-item:first-of-type { grid-row: 1; }
+  td.pp { display: grid; grid-template-columns: 104px 1fr; padding: 6px 0; }
+  td.pp .papers { grid-column: 2; }
+  .hotel { margin-left: 104px; }
+  .hotel .sub { display: block; margin-left: 0; }
 }
 </style>
 </head>
@@ -80,15 +98,17 @@ tr.is-hidden td { opacity: .55; }
 </header>
 <main class="wrap">
   <h1>Conference Deadlines</h1>
-  <p class="lede">Upcoming conference submission deadlines, soonest first, in New York time. Once its submission deadline passes, a conference moves to the second table until its notification date. Conference names link to the official site. Always confirm dates there before submitting.</p>
+  <p class="lede">Upcoming conference submission deadlines, soonest first, in New York time. Deadlines more than six months away are collapsed at the end of the first table. Once its submission deadline passes, a conference moves to the second table until its notification date. The second table also lists upcoming conferences where I have accepted papers, until the conference ends. Conference names link to the official site. Always confirm dates there before submitting.</p>
   <p class="legend"><span class="est">est.</span> = call for papers not yet out; dates projected from the previous edition. Rebuttal: the period when authors can respond to reviews; — = none listed.</p>
 
   <table id="upcoming">
     <thead><tr><th>Conference</th><th>Submission deadline</th><th>Rebuttal</th><th>Notification</th><th>Location</th><th>Conference dates</th></tr></thead>
     <tbody></tbody>
+    <tbody id="later-toggle"><tr><td colspan="6"><button type="button" class="hide-btn" id="toggle-later"></button></td></tr></tbody>
+    <tbody id="later" hidden></tbody>
   </table>
 
-  <h2 id="closed-h">Submission deadline passed, decisions pending</h2>
+  <h2 id="closed-h">Submission deadline passed</h2>
   <table id="closed">
     <thead><tr><th>Conference</th><th>Submission deadline</th><th>Rebuttal</th><th>Notification</th><th>Location</th><th>Conference dates</th></tr></thead>
     <tbody></tbody>
@@ -142,28 +162,73 @@ tr.is-hidden td { opacity: .55; }
       '<td class="rb date" data-label="Rebuttal"><span class="d">' + range(c.rebuttal) + "</span></td>" +
       '<td class="nt date" data-label="Notification"><span class="d">' + fmt(c.notification) + "</span></td>" +
       '<td data-label="Location">' + (c.location ? esc(c.location) : "TBA") + "</td>" +
+      '<td class="date" data-label="Dates">' + range(c.conf_dates) + "</td></tr>" + subsRow(c, isHidden);
+  }
+  function paperList(list) {
+    return '<ul class="papers">' + list.map(function (p) {
+      var t = p.url ? '<a href="' + esc(p.url) + '" target="_blank" rel="noopener">' + esc(p.title) + "</a>" : esc(p.title);
+      return '<li><span class="title">' + t + (p.number ? ' <span class="num">#' + esc(p.number) + "</span>" : "") +
+        '</span><span class="authors">' + esc(p.authors.join(", ")) + "</span></li>";
+    }).join("") + "</ul>";
+  }
+  function subsRow(c, isHidden) {
+    if (!c.my_submissions || !c.my_submissions.length) return "";
+    return '<tr class="subs' + (isHidden ? " is-hidden" : "") + '"><td></td><td class="pp" colspan="5" data-label="Submitted">' +
+      '<span class="kind">My submissions</span>' + paperList(c.my_submissions) + "</td></tr>";
+  }
+  function endDate(r) { var m = String(r || "").match(/\d{4}-\d{2}-\d{2}/g); return m ? parse(m[m.length - 1]) : null; }
+  function mineRow(c) {
+    var h = c.hotel;
+    var hotel = h ? '<span class="hotel">' + (h.url ? '<a href="' + esc(h.url) + '" target="_blank" rel="noopener">' + esc(h.name) + "</a>" : esc(h.name)) +
+      (h.address ? '<span class="sub">' + esc(h.address) + "</span>" : "") +
+      (h.note ? '<span class="sub">' + esc(h.note) + "</span>" : "") + "</span>" : "";
+    return '<tr class="mine-row">' +
+      '<td class="conf"><a href="' + esc(c.url) + '" target="_blank" rel="noopener">' + esc(c.acronym) + " " + esc(c.year) + "</a>" +
+        '<span class="mine">My papers</span><span class="full">' + esc(c.full_name) + "</span></td>" +
+      '<td class="pp" colspan="3" data-label="Papers">' + paperList(c.papers || []) + "</td>" +
+      '<td data-label="Location">' + (c.location ? esc(c.location) : "TBA") + hotel + "</td>" +
       '<td class="date" data-label="Dates">' + range(c.conf_dates) + "</td></tr>";
   }
   fetch("confs.json", { cache: "no-cache" }).then(function (r) { return r.json(); }).then(function (data) {
     var now = today();
+    var mine = (data.my_papers || []).filter(function (c) { var e = endDate(c.conf_dates); return !e || e >= now; })
+      .sort(function (a, b) { return (endDate(a.conf_dates) || 0) - (endDate(b.conf_dates) || 0); });
     var list = data.conferences.filter(function (c) { return c.deadline; })
       .sort(function (a, b) { return parse(a.deadline) - parse(b.deadline); });
     var shown = list.filter(function (c) { return parse(c.deadline) >= now || !c.notification || parse(c.notification) >= now; });
-    var STORE = "hiddenConferences", showHidden = false, hiddenKeys = [];
+    var nd = new Date(now), horizon = Date.UTC(nd.getUTCFullYear(), nd.getUTCMonth() + 6, nd.getUTCDate());
+    var STORE = "hiddenConferences", showHidden = false, hiddenKeys = [], showLater = false;
+    try { showLater = localStorage.getItem("showLater") === "1"; } catch (e) {}
     try { hiddenKeys = JSON.parse(localStorage.getItem(STORE)) || []; } catch (e) {}
     function isHidden(c) { return hiddenKeys.indexOf(key(c)) >= 0; }
     function render() {
       var rows = shown.filter(function (c) { return showHidden || !isHidden(c); });
       function fill(id, list) { document.querySelector("#" + id + " tbody").innerHTML = list.map(function (c) { return row(c, now, isHidden(c)); }).join(""); }
       var closed = rows.filter(function (c) { return parse(c.deadline) < now; });
-      fill("upcoming", rows.filter(function (c) { return parse(c.deadline) >= now; }));
+      var open = rows.filter(function (c) { return parse(c.deadline) >= now; });
+      function html(list) { return list.map(function (c) { return row(c, now, isHidden(c)); }).join(""); }
+      document.querySelector("#upcoming tbody").innerHTML = html(open.filter(function (c) { return parse(c.deadline) <= horizon; }));
+      var later = open.filter(function (c) { return parse(c.deadline) > horizon; });
+      var lt = document.getElementById("later");
+      lt.innerHTML = html(later);
+      lt.hidden = !showLater;
+      document.getElementById("later-toggle").hidden = !later.length;
+      document.getElementById("toggle-later").textContent = showLater ?
+        "Hide deadlines more than 6 months away" :
+        "Show " + later.length + (later.length === 1 ? " conference" : " conferences") + " with deadlines more than 6 months away";
       fill("closed", closed);
-      document.getElementById("closed").hidden = document.getElementById("closed-h").hidden = !closed.length;
+      document.querySelector("#closed tbody").insertAdjacentHTML("afterbegin", mine.map(mineRow).join(""));
+      document.getElementById("closed").hidden = document.getElementById("closed-h").hidden = !(closed.length || mine.length);
       var n = shown.filter(isHidden).length, bar = document.getElementById("hidden-bar");
       if (!n) showHidden = false;
       bar.hidden = !n;
       bar.innerHTML = n + " hidden" + '<button type="button" class="hide-btn" id="toggle-hidden">' + (showHidden ? "Don't show" : "Show") + "</button>";
     }
+    document.getElementById("toggle-later").addEventListener("click", function () {
+      showLater = !showLater;
+      try { localStorage.setItem("showLater", showLater ? "1" : "0"); } catch (e) {}
+      render();
+    });
     document.querySelector("main").addEventListener("click", function (e) {
       var k = e.target.getAttribute && e.target.getAttribute("data-key");
       if (!k) return;

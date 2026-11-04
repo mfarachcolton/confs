@@ -37,3 +37,9 @@ Upcoming conference submission deadlines, served by GitHub Pages.
 3. If an `estimated` row's CFP is now out, replace the dates with the announced ones and set `status` to `announced`.
 4. Never invent dates or URLs; read them from the official page and record it in `source`.
 5. Set `updated` to today, commit, and push to `main`.
+
+## My papers
+
+`my_papers` in `confs.json` lists upcoming conferences where I have accepted papers:
+`{acronym, year, full_name, url, conf_dates, location, hotel: {name, address, url, note}, source, papers: [{title, authors: [...]}]}`.
+They appear at the top of the second table, by conference date, until the conference ends.

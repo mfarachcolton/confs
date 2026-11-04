@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-02",
+  "updated": "2026-11-04",
   "conferences": [
     {
       "acronym": "STOC",
@@ -16,7 +16,32 @@
       "location": "Atlanta, GA",
       "status": "announced",
       "source": "https://acm-stoc.org/stoc2027/",
-      "notes": "Part of FCRC 2027."
+      "notes": "Part of FCRC 2027.",
+      "my_submissions": [
+        {
+          "title": "Incremental Open Addressing Has No Time-Space Tradeoff",
+          "number": 905,
+          "url": "https://stoc27.hotcrp.com/paper/905",
+          "authors": [
+            "Martín Farach-Colton",
+            "William Kuszmaul",
+            "Andrew Krapivin"
+          ]
+        },
+        {
+          "title": "Sparse α-Navigable Graphs in Euclidean Space via Steiner Points",
+          "number": 1396,
+          "url": "https://stoc27.hotcrp.com/paper/1396",
+          "authors": [
+            "Alex Conway",
+            "Laxman Dhulipala",
+            "Martín Farach-Colton",
+            "Yarin Shechter",
+            "Torsten Suel",
+            "Richard Wen"
+          ]
+        }
+      ]
     },
     {
       "acronym": "FOCS",
@@ -391,6 +416,87 @@
       "status": "announced",
       "source": "https://learningtheory.org/colt2027/cfp.html",
       "notes": "Rebuttal period is listed as expected. Notification on or before May 3."
+    }
+  ],
+  "my_papers": [
+    {
+      "acronym": "SODA",
+      "year": 2027,
+      "full_name": "ACM-SIAM Symposium on Discrete Algorithms",
+      "url": "https://www.siam.org/conferences-events/siam-conferences/soda27/",
+      "conf_dates": "2027-01-24 to 2027-01-27",
+      "location": "Philadelphia, PA",
+      "hotel": {
+        "name": "Sheraton Philadelphia Downtown",
+        "address": "201 N 17th St, Philadelphia, PA 19103",
+        "url": "https://www.siam.org/conferences-events/siam-conferences/soda27/lodging-support/hotel-transportation/",
+        "note": "Group rate $156/night until 5 pm ET, Dec 21, 2026"
+      },
+      "source": "https://www.siam.org/conferences-events/siam-conferences/soda27/program/accepted-papers/",
+      "papers": [
+        {
+          "title": "Tight Bounds for Memory Allocation With and Without Request Fragmentation",
+          "authors": [
+            "Michael A. Bender",
+            "Alex Conway",
+            "Martín Farach-Colton",
+            "Hanna Komlós",
+            "William Kuszmaul",
+            "Nicole Wein"
+          ]
+        },
+        {
+          "title": "Fast Sparse α-Navigable Graph Construction with Improved Resource Augmentation",
+          "authors": [
+            "Alex Conway",
+            "Laxman Dhulipala",
+            "Martín Farach-Colton",
+            "Ben Landrum",
+            "Christopher Musco",
+            "Yarin Shechter",
+            "Torsten Suel",
+            "Richard Wen"
+          ]
+        }
+      ]
+    },
+    {
+      "acronym": "PODS",
+      "year": 2027,
+      "full_name": "ACM Symposium on Principles of Database Systems (with SIGMOD)",
+      "url": "https://2027.sigmodconf.hosting.acm.org/",
+      "conf_dates": "2027-06-13 to 2027-06-18",
+      "location": "Huntington Beach, CA",
+      "hotel": {
+        "name": "Hyatt Regency Huntington Beach Resort and Spa",
+        "address": "21500 Pacific Coast Hwy, Huntington Beach, CA 92648",
+        "url": "https://2027.sigmodconf.hosting.acm.org/accomodations.shtml",
+        "note": "Group rate and cutoff not posted yet"
+      },
+      "source": "https://2027.sigmodconf.hosting.acm.org/pods_papers.shtml",
+      "papers": [
+        {
+          "title": "Popcorning: Repurposing Write-Optimization Buffers for Faster Queries",
+          "authors": [
+            "Peyman Afshani",
+            "Michael A. Bender",
+            "Philip Bille",
+            "Alex Conway",
+            "Martín Farach-Colton",
+            "Jeremy Fineman",
+            "Michael T. Goodrich",
+            "Inge Li Gørtz",
+            "John Iacono",
+            "Rob Johnson",
+            "Hanna Komlós",
+            "William Kuszmaul",
+            "Rose Silver",
+            "Robert Tarjan",
+            "Simon Rumle Tarnow",
+            "Renfei Zhou"
+          ]
+        }
+      ]
     }
   ]
 }
