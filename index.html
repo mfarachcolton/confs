@@ -165,7 +165,8 @@ td.hotel .sub { white-space: normal; }
     var deadlines = c.abstract_deadline ?
       item("Abstract", c.abstract_deadline, c.abstract_tz) + item("Paper", c.deadline, c.deadline_tz) :
       item("", c.deadline, c.deadline_tz);
-    var btn = parse(firstDeadline(c)) < now ?
+    var mySubs = c.my_submissions && c.my_submissions.length;
+    var btn = !mySubs && parse(firstDeadline(c)) < now ?
       '<button type="button" class="hide-btn" data-key="' + esc(key(c)) + '">' + (isHidden ? "Unhide" : "Hide") + "</button>" : "";
     return '<tr class="' + (est ? "estimated" : "") + (isHidden ? " is-hidden" : "") + '">' +
       '<td class="conf"><a href="' + esc(c.url) + '" target="_blank" rel="noopener">' + esc(c.acronym) + " " + esc(c.year) + "</a>" +
@@ -223,7 +224,7 @@ td.hotel .sub { white-space: normal; }
     var STORE = "hiddenConferences", showHidden = false, hiddenKeys = [], showLater = false;
     try { showLater = localStorage.getItem("showLater") === "1"; } catch (e) {}
     try { hiddenKeys = JSON.parse(localStorage.getItem(STORE)) || []; } catch (e) {}
-    function isHidden(c) { return hiddenKeys.indexOf(key(c)) >= 0; }
+    function isHidden(c) { return !(c.my_submissions && c.my_submissions.length) && hiddenKeys.indexOf(key(c)) >= 0; }
     function render() {
       var rows = shown.filter(function (c) { return showHidden || !isHidden(c); });
       function fill(id, list) { document.querySelector("#" + id + " tbody").innerHTML = list.map(function (c) { return row(c, now, isHidden(c), true); }).join(""); }
