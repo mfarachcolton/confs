@@ -139,6 +139,7 @@ td.hotel .sub { white-space: normal; }
     return MONTHS[a.getUTCMonth()] + " " + a.getUTCDate() + " – " + MONTHS[b.getUTCMonth()] + " " + b.getUTCDate() + ", " + b.getUTCFullYear();
   }
   function firstDeadline(c) { return c.abstract_deadline || c.deadline; }
+  function keep(c) { return !!(c.pc || (c.my_submissions && c.my_submissions.length)); }
   function key(c) { return c.acronym + "|" + c.year + "|" + c.deadline; }
   function hotelCell(c) {
     var h = c.hotel;
@@ -165,12 +166,11 @@ td.hotel .sub { white-space: normal; }
     var deadlines = c.abstract_deadline ?
       item("Abstract", c.abstract_deadline, c.abstract_tz) + item("Paper", c.deadline, c.deadline_tz) :
       item("", c.deadline, c.deadline_tz);
-    var mySubs = c.my_submissions && c.my_submissions.length;
-    var btn = !mySubs && parse(firstDeadline(c)) < now ?
+    var btn = !keep(c) && parse(firstDeadline(c)) < now ?
       '<button type="button" class="hide-btn" data-key="' + esc(key(c)) + '">' + (isHidden ? "Unhide" : "Hide") + "</button>" : "";
     return '<tr class="' + (est ? "estimated" : "") + (isHidden ? " is-hidden" : "") + '">' +
       '<td class="conf"><a href="' + esc(c.url) + '" target="_blank" rel="noopener">' + esc(c.acronym) + " " + esc(c.year) + "</a>" +
-        (est ? '<span class="est">est.</span>' : "") + '<span class="full">' + esc(c.full_name) + "</span>" + btn + "</td>" +
+        (est ? '<span class="est">est.</span>' : "") + (c.pc ? '<span class="mine">On PC</span>' : "") + '<span class="full">' + (c.pc && c.pc !== "PC member" ? esc(c.pc) + " · " : "") + esc(c.full_name) + "</span>" + btn + "</td>" +
       (closed ? "" : '<td class="dl date" data-label="Deadline">' + deadlines + "</td>") +
       '<td class="rb date" data-label="Rebuttal"><span class="d">' + range(c.rebuttal) + "</span></td>" +
       '<td class="nt date" data-label="Notification"><span class="d">' + fmt(c.notification) + "</span></td>" +
@@ -224,7 +224,7 @@ td.hotel .sub { white-space: normal; }
     var STORE = "hiddenConferences", showHidden = false, hiddenKeys = [], showLater = false;
     try { showLater = localStorage.getItem("showLater") === "1"; } catch (e) {}
     try { hiddenKeys = JSON.parse(localStorage.getItem(STORE)) || []; } catch (e) {}
-    function isHidden(c) { return !(c.my_submissions && c.my_submissions.length) && hiddenKeys.indexOf(key(c)) >= 0; }
+    function isHidden(c) { return !keep(c) && hiddenKeys.indexOf(key(c)) >= 0; }
     function render() {
       var rows = shown.filter(function (c) { return showHidden || !isHidden(c); });
       function fill(id, list) { document.querySelector("#" + id + " tbody").innerHTML = list.map(function (c) { return row(c, now, isHidden(c), true); }).join(""); }

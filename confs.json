@@ -63,7 +63,8 @@
       "location": null,
       "status": "estimated",
       "source": "https://focs.computer.org/2026/",
-      "notes": "No FOCS 2027 site yet; links to FOCS 2026."
+      "notes": "No FOCS 2027 site yet; links to FOCS 2026.",
+      "pc": "PC member"
     },
     {
       "acronym": "SODA",
