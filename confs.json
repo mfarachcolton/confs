@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-04",
+  "updated": "2026-11-09",
   "conferences": [
     {
       "acronym": "STOC",
@@ -16,7 +16,7 @@
       "location": "Atlanta, GA",
       "status": "announced",
       "source": "https://acm-stoc.org/stoc2027/",
-      "notes": "Part of FCRC 2027.",
+      "notes": "Part of FCRC 2027. Mandatory video submission due 2026-11-16 (11:59 pm AoE).",
       "my_submissions": [
         {
           "title": "Incremental Open Addressing Has No Time-Space Tradeoff",
@@ -376,18 +376,18 @@
       "acronym": "ICML",
       "full_name": "International Conference on Machine Learning",
       "year": 2027,
-      "url": "https://icml.cc/",
+      "url": "https://icml.cc/Conferences/2027",
       "deadline": "2027-01-29",
       "deadline_tz": "6:59 am EST",
       "abstract_deadline": "2027-01-24",
       "abstract_tz": "6:59 am EST",
       "rebuttal": "2027-03-24 to 2027-03-30",
       "notification": "2027-04-30",
-      "conf_dates": null,
-      "location": "South America",
+      "conf_dates": "2027-07-31 to 2027-08-06",
+      "location": "Rio de Janeiro, Brazil",
       "status": "estimated",
       "source": "https://icml.cc/Conferences/2026/Dates",
-      "notes": "Projected from ICML 2026 (official location: South America per icml.cc Future Meetings). Rebuttal is reviews released through the author response deadline."
+      "notes": "Deadlines projected from ICML 2026; the 2027 CFP and dates page are not out yet. Location (Riocentro) and conference dates are official (icml.cc/Conferences/2027: Expo Jul 31, tutorials Aug 1, main conference Aug 2-4, workshops Aug 5-6). ICML 2027 is about three weeks later in the year than ICML 2026, so the real deadlines may be later than projected. Rebuttal is reviews released through the author response deadline."
     },
     {
       "acronym": "ICLR",
