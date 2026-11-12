@@ -46,7 +46,8 @@
         "name": "Hyatt Regency Atlanta",
         "url": "https://fcrc.acm.org/for-attendees/hotel-info-2027",
         "note": "FCRC group rate $205/night until May 3, 2027"
-      }
+      },
+      "cycle": "only"
     },
     {
       "acronym": "FOCS",
@@ -64,7 +65,8 @@
       "status": "estimated",
       "source": "https://focs.computer.org/2026/",
       "notes": "No FOCS 2027 site yet; links to FOCS 2026.",
-      "pc": "PC member"
+      "pc": "PC member",
+      "cycle": "only"
     },
     {
       "acronym": "SODA",
@@ -81,7 +83,8 @@
       "location": null,
       "status": "estimated",
       "source": "https://soda27.hotcrp.com/deadlines",
-      "notes": "Projected from SODA 2027; siam.org blocked automated reads."
+      "notes": "Projected from SODA 2027; siam.org blocked automated reads.",
+      "cycle": "only"
     },
     {
       "acronym": "ICALP",
@@ -115,7 +118,8 @@
       "location": null,
       "status": "estimated",
       "source": "https://algo-conference.org/2026/esa/",
-      "notes": "No ALGO 2027 site yet; links to ESA 2026."
+      "notes": "No ALGO 2027 site yet; links to ESA 2026.",
+      "cycle": "only"
     },
     {
       "acronym": "ITCS",
@@ -132,7 +136,8 @@
       "location": null,
       "status": "estimated",
       "source": "https://itcs-conf.org/",
-      "notes": "Projected from ITCS 2027."
+      "notes": "Projected from ITCS 2027.",
+      "cycle": "only"
     },
     {
       "acronym": "SPAA",
@@ -150,7 +155,7 @@
       "status": "announced",
       "source": "https://spaa.acm.org/?p=1424",
       "notes": "Cycle 1 closed 2026-09-25 (notification 2026-12-05). Part of FCRC 2027.",
-      "last_cycle": true
+      "cycle": "last"
     },
     {
       "acronym": "PODC",
@@ -167,7 +172,8 @@
       "location": "Reykjavik, Iceland",
       "status": "estimated",
       "source": "https://www.podc.org/podc2027/call-for-papers",
-      "notes": "Dates/location official; deadlines projected from 2026."
+      "notes": "Dates/location official; deadlines projected from 2026.",
+      "cycle": "only"
     },
     {
       "acronym": "SOSA",
@@ -184,7 +190,8 @@
       "location": null,
       "status": "estimated",
       "source": "https://sosa27.hotcrp.com/deadlines",
-      "notes": "Projected from SOSA 2027. Co-located with SODA."
+      "notes": "Projected from SOSA 2027. Co-located with SODA.",
+      "cycle": "only"
     },
     {
       "acronym": "ISAAC",
@@ -201,7 +208,8 @@
       "location": null,
       "status": "estimated",
       "source": "https://www.algo-door.com/isaac2026/",
-      "notes": "Projected from ISAAC 2026."
+      "notes": "Projected from ISAAC 2026.",
+      "cycle": "only"
     },
     {
       "acronym": "LATIN",
@@ -218,7 +226,8 @@
       "location": null,
       "status": "estimated",
       "source": "https://latin2026.ufsc.br",
-      "notes": "Biennial; projected from LATIN 2026."
+      "notes": "Biennial; projected from LATIN 2026.",
+      "cycle": "only"
     },
     {
       "acronym": "ICDT",
@@ -252,7 +261,8 @@
       "location": null,
       "status": "estimated",
       "source": "https://fun2026.limos.fr/cfp/",
-      "notes": "Biennial; projected from FUN 2026."
+      "notes": "Biennial; projected from FUN 2026.",
+      "cycle": "only"
     },
     {
       "acronym": "COCOON",
@@ -269,7 +279,8 @@
       "location": "Melbourne, Australia",
       "status": "announced",
       "source": "https://cocoon2027.github.io/call-for-papers.html",
-      "notes": "Official deadline: 2027-02-27 AoE."
+      "notes": "Official deadline: 2027-02-27 AoE.",
+      "cycle": "only"
     },
     {
       "acronym": "PODS",
@@ -300,7 +311,7 @@
           ]
         }
       ],
-      "last_cycle": true
+      "cycle": "last"
     },
     {
       "acronym": "SIGMOD",
@@ -359,7 +370,8 @@
             "Martín Farach-Colton"
           ]
         }
-      ]
+      ],
+      "cycle": "only"
     },
     {
       "acronym": "SOSP",
@@ -376,7 +388,8 @@
       "location": "Vancouver, Canada",
       "status": "estimated",
       "source": "https://sigops.org/s/conferences/sosp/2026/cfp.html",
-      "notes": "Now annual; projected from SOSP 2026. Location and conference dates are official (sosp.org). SOSP 2027 is about two months later in the year than SOSP 2026, so the real deadlines may be later than projected."
+      "notes": "Now annual; projected from SOSP 2026. Location and conference dates are official (sosp.org). SOSP 2027 is about two months later in the year than SOSP 2026, so the real deadlines may be later than projected.",
+      "cycle": "only"
     },
     {
       "acronym": "NeurIPS",
@@ -393,7 +406,8 @@
       "location": "Europe",
       "status": "estimated",
       "source": "https://neurips.cc/Conferences/2026/Dates",
-      "notes": "Projected from NeurIPS 2026 (official location: Europe per neurips.cc Future Meetings). Rebuttal spans reviews released through the end of the author discussion."
+      "notes": "Projected from NeurIPS 2026 (official location: Europe per neurips.cc Future Meetings). Rebuttal spans reviews released through the end of the author discussion.",
+      "cycle": "only"
     },
     {
       "acronym": "ICML",
@@ -410,7 +424,8 @@
       "location": "Rio de Janeiro, Brazil",
       "status": "estimated",
       "source": "https://icml.cc/Conferences/2026/Dates",
-      "notes": "Deadlines projected from ICML 2026; the 2027 CFP and dates page are not out yet. Location (Riocentro) and conference dates are official (icml.cc/Conferences/2027: Expo Jul 31, tutorials Aug 1, main conference Aug 2-4, workshops Aug 5-6). ICML 2027 is about three weeks later in the year than ICML 2026, so the real deadlines may be later than projected. Rebuttal is reviews released through the author response deadline."
+      "notes": "Deadlines projected from ICML 2026; the 2027 CFP and dates page are not out yet. Location (Riocentro) and conference dates are official (icml.cc/Conferences/2027: Expo Jul 31, tutorials Aug 1, main conference Aug 2-4, workshops Aug 5-6). ICML 2027 is about three weeks later in the year than ICML 2026, so the real deadlines may be later than projected. Rebuttal is reviews released through the author response deadline.",
+      "cycle": "only"
     },
     {
       "acronym": "ICLR",
@@ -427,7 +442,8 @@
       "location": "San Francisco, CA",
       "status": "announced",
       "source": "https://iclr.cc/Conferences/2027/Dates",
-      "notes": "Deadline passed; decisions Dec 16, 2026. Rebuttal is the author-reviewer discussion. Location from iclr.cc/Conferences/2027: text says California, and the venue image is captioned Moscone Center, San Francisco; venue details are still to be posted. Next: ICLR 2028, est. Sep 2027."
+      "notes": "Deadline passed; decisions Dec 16, 2026. Rebuttal is the author-reviewer discussion. Location from iclr.cc/Conferences/2027: text says California, and the venue image is captioned Moscone Center, San Francisco; venue details are still to be posted. Next: ICLR 2028, est. Sep 2027.",
+      "cycle": "only"
     },
     {
       "acronym": "COLT",
@@ -444,7 +460,8 @@
       "location": "Tokyo, Japan",
       "status": "announced",
       "source": "https://learningtheory.org/colt2027/cfp.html",
-      "notes": "Rebuttal period is listed as expected. Notification on or before May 3."
+      "notes": "Rebuttal period is listed as expected. Notification on or before May 3.",
+      "cycle": "only"
     }
   ],
   "my_papers": [
