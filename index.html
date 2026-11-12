@@ -56,6 +56,7 @@ tr.is-hidden td { opacity: .55; }
 #hidden-bar { margin: 16px 0 0; font-size: 13px; color: var(--muted); }
 #hidden-bar .hide-btn { display: inline-block; margin: 0 0 0 8px; }
 .legend { font-size: 13px; color: var(--muted); margin: -14px 0 24px; }
+.last { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; color: var(--soon); background: var(--soon-soft); border-radius: 4px; padding: 0 5px; margin-left: 6px; white-space: nowrap; }
 .mine { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; color: var(--accent); background: var(--accent-soft); border-radius: 4px; padding: 0 5px; margin-left: 6px; }
 .papers { margin: 0; padding: 0; list-style: none; }
 .papers li + li { margin-top: 10px; }
@@ -106,7 +107,7 @@ td.hotel .sub { white-space: normal; }
 <main class="wrap">
   <h1>Conference Deadlines</h1>
   <p class="lede">Upcoming conference submission deadlines, soonest first, in New York time. Deadlines more than six months away are collapsed at the end of the first table. Once its submission deadline passes, a conference moves to the second table until its notification date. The second table also lists upcoming conferences where I have accepted papers, until the conference ends. Conference names link to the official site. Always confirm dates there before submitting.</p>
-  <p class="legend"><span class="est">est.</span> = call for papers not yet out; dates projected from the previous edition. Rebuttal: the period when authors can respond to reviews; — = none listed.</p>
+  <p class="legend"><span class="est">est.</span> = call for papers not yet out; dates projected from the previous edition. <span class="last">Last cycle</span> = final submission cycle for this edition of a conference with several cycles. Rebuttal: the period when authors can respond to reviews; — = none listed.</p>
 
   <table id="upcoming">
     <thead><tr><th>Conference</th><th>Submission deadline</th><th>Rebuttal</th><th>Notification</th><th>Location</th><th>Conference dates</th></tr></thead>
@@ -172,7 +173,7 @@ td.hotel .sub { white-space: normal; }
       '<button type="button" class="hide-btn" data-key="' + esc(key(c)) + '">' + (isHidden ? "Unhide" : "Hide") + "</button>" : "";
     return '<tr class="' + (est ? "estimated" : "") + (isHidden ? " is-hidden" : "") + '">' +
       '<td class="conf"><a href="' + esc(c.url) + '" target="_blank" rel="noopener">' + esc(c.acronym) + " " + esc(c.year) + "</a>" +
-        (est ? '<span class="est">est.</span>' : "") + (c.pc ? '<span class="mine">On PC</span>' : "") + '<span class="full">' + (c.pc && c.pc !== "PC member" ? esc(c.pc) + " · " : "") + esc(c.full_name) + "</span>" + btn + "</td>" +
+        (est ? '<span class="est">est.</span>' : "") + (c.last_cycle && !closed ? '<span class="last">Last cycle</span>' : "") + (c.pc ? '<span class="mine">On PC</span>' : "") + '<span class="full">' + (c.pc && c.pc !== "PC member" ? esc(c.pc) + " · " : "") + esc(c.full_name) + "</span>" + btn + "</td>" +
       (closed ? "" : '<td class="dl date" data-label="Deadline">' + deadlines + "</td>") +
       '<td class="rb date" data-label="Rebuttal"><span class="d">' + range(c.rebuttal) + "</span></td>" +
       '<td class="nt date" data-label="Notification"><span class="d">' + fmt(c.notification) + "</span></td>" +

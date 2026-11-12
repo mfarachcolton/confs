@@ -22,6 +22,7 @@ Upcoming conference submission deadlines, served by GitHub Pages.
       "notification": "YYYY-MM-DD",
       "conf_dates": "YYYY-MM-DD to YYYY-MM-DD",
       "location": "City, Country",     // "City, ST" in the US; or null
+      "last_cycle": true,              // only on conferences with several cycles, when this is the final one
       "status": "announced",           // or "estimated" (CFP not out; projected from last year)
       "source": "https://...",         // page the dates were read from
       "notes": ""
@@ -36,7 +37,8 @@ Upcoming conference submission deadlines, served by GitHub Pages.
 2. If a conference's notification date has passed, replace the row with the next edition (estimated from this year's dates + 1 year until its CFP appears).
 3. If an `estimated` row's CFP is now out, replace the dates with the announced ones and set `status` to `announced`.
 4. Never invent dates or URLs; read them from the official page and record it in `source`.
-5. Set `updated` to today, commit, and push to `main`.
+5. For conferences with several cycles (SPAA, PODS, ICDT, SIGMOD, FAST, …), set `last_cycle: true` exactly when the row shows the edition's final cycle; drop it when the row moves on to the next edition. Single-deadline conferences never get it.
+6. Set `updated` to today, commit, and push to `main`.
 
 ## My papers
 

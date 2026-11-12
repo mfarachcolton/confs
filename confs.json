@@ -149,7 +149,8 @@
       "location": "Atlanta, GA",
       "status": "announced",
       "source": "https://spaa.acm.org/?p=1424",
-      "notes": "Cycle 1 closed 2026-09-25 (notification 2026-12-05). Part of FCRC 2027."
+      "notes": "Cycle 1 closed 2026-09-25 (notification 2026-12-05). Part of FCRC 2027.",
+      "last_cycle": true
     },
     {
       "acronym": "PODC",
@@ -298,7 +299,8 @@
             "Yarin Shechter"
           ]
         }
-      ]
+      ],
+      "last_cycle": true
     },
     {
       "acronym": "SIGMOD",
