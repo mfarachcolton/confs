@@ -368,7 +368,14 @@
         {
           "title": "Tiny Pointer Page Tables: A Compressed Page Table for Fast Address Translation",
           "authors": [
-            "Martín Farach-Colton"
+            "Yuqi Mai",
+            "Xilin Tang",
+            "Simon Bertron",
+            "Linfeng He",
+            "Martín Farach-Colton",
+            "Sudarsun Kannan",
+            "Bill Kuszmaul",
+            "Alex Conway"
           ]
         }
       ],
