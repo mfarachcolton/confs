@@ -285,7 +285,15 @@
       "location": "Huntington Beach, CA",
       "status": "announced",
       "source": "https://2027.sigmod.org/calls_papers_pods_research.shtml",
-      "notes": "Initial notification Feb 8; final notification 2027-03-01. Next: PODS 2028 cycle 1, est. 2027-05-30. Co-located with SIGMOD."
+      "notes": "Initial notification Feb 8; final notification 2027-03-01. Next: PODS 2028 cycle 1, est. 2027-05-30. Co-located with SIGMOD.",
+      "my_planned": [
+        {
+          "title": "Mend the Gaps: Optimizing Learned Indexes",
+          "authors": [
+            "Martín Farach-Colton"
+          ]
+        }
+      ]
     },
     {
       "acronym": "SIGMOD",
