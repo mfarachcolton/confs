@@ -37,7 +37,7 @@ Upcoming conference submission deadlines, served by GitHub Pages.
 2. If a conference's notification date has passed, replace the row with the next edition (estimated from this year's dates + 1 year until its CFP appears).
 3. If an `estimated` row's CFP is now out, replace the dates with the announced ones and set `status` to `announced`.
 4. Never invent dates or URLs; read them from the official page and record it in `source`.
-5. Set `cycle`: `"only"` when this edition has a single submission deadline; `"last"` when it has several cycles (SPAA, PODS, ICDT, SIGMOD, FAST, …) and the row shows the final one; omit it for an earlier cycle. ICALP has none: Track A has one deadline but Track B has rounds. Recheck it whenever a row moves to the next edition or the next cycle.
+5. Set `cycle`: `"only"` when this edition has a single submission deadline; `"last"` when it has several cycles (SPAA, PODS, ICDT, SIGMOD, FAST, …) and the row shows the final one; omit it for an earlier cycle. ICALP counts as `"only"` (Track A has one deadline; ignore Track B rounds). Recheck it whenever a row moves to the next edition or the next cycle.
 6. Set `updated` to today, commit, and push to `main`.
 
 ## My papers

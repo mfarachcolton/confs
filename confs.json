@@ -101,7 +101,8 @@
       "location": "Kraków, Poland",
       "status": "estimated",
       "source": "https://icalp.uj.edu.pl/track-b/",
-      "notes": "Dates/location official; Track A deadline TBA, projected from 2026. Track B round 1 closed 2026-09-15. Track B only has a rebuttal (round 1: 2026-11-05 to 2026-11-09; round 2 TBA); Track A has none listed."
+      "notes": "Dates/location official; Track A deadline TBA, projected from 2026. Track B round 1 closed 2026-09-15. Track B only has a rebuttal (round 1: 2026-11-05 to 2026-11-09; round 2 TBA); Track A has none listed.",
+      "cycle": "only"
     },
     {
       "acronym": "ESA",
