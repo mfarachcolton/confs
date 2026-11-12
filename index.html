@@ -70,6 +70,8 @@ tr.is-hidden td { opacity: .55; }
 tr.subs td { padding-top: 0; }
 tr:has(+ tr.subs) td { border-bottom: 0; }
 tr.subs .kind { margin-bottom: 4px; }
+tr.subs .gap { display: block; height: 12px; }
+@media (max-width: 960px) { tr.subs td.pp > * { grid-column: 2; } }
 #later-toggle td { padding: 14px 12px; }
 #later-toggle .hide-btn { margin: 0; color: var(--accent); }
 td.hotel .sub { white-space: normal; }
@@ -139,7 +141,7 @@ td.hotel .sub { white-space: normal; }
     return MONTHS[a.getUTCMonth()] + " " + a.getUTCDate() + " – " + MONTHS[b.getUTCMonth()] + " " + b.getUTCDate() + ", " + b.getUTCFullYear();
   }
   function firstDeadline(c) { return c.abstract_deadline || c.deadline; }
-  function keep(c) { return !!(c.pc || (c.my_submissions && c.my_submissions.length)); }
+  function keep(c) { return !!(c.pc || (c.my_submissions && c.my_submissions.length) || (c.my_planned && c.my_planned.length)); }
   function key(c) { return c.acronym + "|" + c.year + "|" + c.deadline; }
   function hotelCell(c) {
     var h = c.hotel;
@@ -200,9 +202,14 @@ td.hotel .sub { white-space: normal; }
       (t.session ? " · " + esc(t.session) : "") + (t.room ? " · " + esc(t.room) : "") + "</span>";
   }
   function subsRow(c, isHidden) {
-    if (!c.my_submissions || !c.my_submissions.length) return "";
-    return '<tr class="subs' + (isHidden ? " is-hidden" : "") + '"><td></td><td class="pp" colspan="5" data-label="Submitted">' +
-      '<span class="kind">My submissions</span>' + paperList(c.my_submissions) + "</td></tr>";
+    var parts = [];
+    if (c.my_submissions && c.my_submissions.length)
+      parts.push('<span class="kind">My submissions</span>' + paperList(c.my_submissions));
+    if (c.my_planned && c.my_planned.length)
+      parts.push('<span class="kind">Planning to submit</span>' + paperList(c.my_planned));
+    if (!parts.length) return "";
+    return '<tr class="subs' + (isHidden ? " is-hidden" : "") + '"><td></td><td class="pp" colspan="5" data-label="Mine">' +
+      parts.join('<span class="gap"></span>') + "</td></tr>";
   }
   function endDate(r) { var m = String(r || "").match(/\d{4}-\d{2}-\d{2}/g); return m ? parse(m[m.length - 1]) : null; }
   function mineRow(c) {

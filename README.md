@@ -46,3 +46,4 @@ They appear at the top of the second table, by conference date, until the confer
 Each paper may have `talk: {date, time, session, room}` once the program is out. `invited: [{kind, title, talk}]` lists keynote/plenary/invited talks; an entry with only an invited talk has `papers: []`.
 Rows in `conferences` may have `hotel: {name, url, note}`; it is shown in the second table.
 A row may have `pc` ("PC member", "PC chair", …): shown as an "On PC" badge; rows with `pc` or `my_submissions` have no Hide button and are never hidden.
+A row may have `my_planned: [{title, authors}]`, papers I plan to submit there, shown as "Planning to submit" under the row (set by the paper-status skill).
