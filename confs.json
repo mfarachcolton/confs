@@ -290,7 +290,12 @@
         {
           "title": "Mend the Gaps: Optimizing Learned Indexes",
           "authors": [
-            "Martín Farach-Colton"
+            "Michael A. Bender",
+            "Martín Farach-Colton",
+            "Ofek Gila",
+            "Michael T. Goodrich",
+            "Hanna Komlós",
+            "Yarin Shechter"
           ]
         }
       ]
