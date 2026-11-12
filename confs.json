@@ -344,7 +344,15 @@
       "location": "Baltimore, MD",
       "status": "announced",
       "source": "https://www.usenix.org/sites/default/files/osdi27_cfp_070726.pdf",
-      "notes": "Preliminary CFP."
+      "notes": "Preliminary CFP.",
+      "my_planned": [
+        {
+          "title": "Tiny Pointer Page Tables: A Compressed Page Table for Fast Address Translation",
+          "authors": [
+            "Martín Farach-Colton"
+          ]
+        }
+      ]
     },
     {
       "acronym": "SOSP",
