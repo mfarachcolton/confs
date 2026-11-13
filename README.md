@@ -15,15 +15,15 @@ Upcoming conference submission deadlines, served by GitHub Pages.
       "acronym": "STOC", "full_name": "ACM Symposium on Theory of Computing", "year": 2027,
       "url": "https://...",            // official site of this edition
       "deadline": "YYYY-MM-DD",        // full-paper deadline, converted to New York time
-      "deadline_tz": "7:59 am EDT",    // New York time; may add " · cycle 2"
+      "deadline_tz": "7:59 am EDT",    // New York time; may add a cycle name, e.g. " · spring"
       "abstract_deadline": null,       // YYYY-MM-DD if separate, New York time
       "abstract_tz": null,             // e.g. "6:59 am EST", New York time
       "rebuttal": "YYYY-MM-DD to YYYY-MM-DD", // author response period; null if none listed
       "notification": "YYYY-MM-DD",
       "conf_dates": "YYYY-MM-DD to YYYY-MM-DD",
       "location": "City, Country",     // "City, ST" in the US; or null
-      "cycle": "only",                 // "only" = single deadline; for multi-cycle editions the cycle number (1, 2, …)
-      "cycles": 4,                     // multi-cycle editions only: total number of cycles; badge shows "cycle/cycles"
+      "cycle": 2,                      // this row's submission cycle number (1 if the edition has a single deadline)
+      "cycles": 4,                     // total number of cycles in this edition; badge shows "cycle/cycles" (1/1 = single deadline)
       "status": "announced",           // or "estimated" (CFP not out; projected from last year)
       "source": "https://...",         // page the dates were read from
       "notes": ""
@@ -38,7 +38,7 @@ Upcoming conference submission deadlines, served by GitHub Pages.
 2. If a conference's notification date has passed, replace the row with the next edition (estimated from this year's dates + 1 year until its CFP appears).
 3. If an `estimated` row's CFP is now out, replace the dates with the announced ones and set `status` to `announced`.
 4. Never invent dates or URLs; read them from the official page and record it in `source`.
-5. Set `cycle`: `"only"` when this edition has a single submission deadline (ICALP counts as `"only"`: Track A has one deadline; ignore Track B rounds); the badge disappears once the paper deadline passes. An edition with several cycles (SPAA, PODS, ICDT, SIGMOD, FAST, …) has one row per cycle, each with `cycle` (its number) and `cycles` (the total); the page shows an `n/total` badge on every such row, in both tables. Keep all cycle rows of an edition, past ones included (the page hides a row once its notification passes), and replace them with the next edition's cycle rows only after the last cycle's notification. Don't put the cycle number in `deadline_tz`; a cycle name may follow the time (`"7:59 am EDT · spring"`).
+5. Set `cycle` and `cycles` on every row: `1`/`1` when this edition has a single submission deadline (ICALP counts as single: Track A has one deadline; ignore Track B rounds). An edition with several cycles (SPAA, PODS, ICDT, SIGMOD, FAST, …) has one row per cycle, each with `cycle` (its number) and `cycles` (the total). The page shows a `cycle/cycles` badge on every row, in both tables. Keep all cycle rows of an edition, past ones included (the page hides a row once its notification passes), and replace them with the next edition's cycle rows only after the last cycle's notification. Don't put the cycle number in `deadline_tz`; a cycle name may follow the time (`"7:59 am EDT · spring"`).
 6. Set `updated` to today, commit, and push to `main`.
 
 ## My papers
