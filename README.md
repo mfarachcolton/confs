@@ -2,7 +2,7 @@
 
 Upcoming conference submission deadlines, served by GitHub Pages.
 
-- `index.html` renders the table from `confs.json` in the browser (sorting, "days left"; once its submission deadline passes, a conference moves to a second table until its notification date).
+- `index.html` renders the table from `confs.json` in the browser (sorting, "days left"; once its submission deadline passes, a conference moves to a second table until its notification date; there, an earlier cycle of a multi-cycle edition is not shown unless it has `my_submissions`).
 - `confs.json` is the only file that changes in a weekly update.
 
 ## confs.json
