@@ -22,7 +22,8 @@ Upcoming conference submission deadlines, served by GitHub Pages.
       "notification": "YYYY-MM-DD",
       "conf_dates": "YYYY-MM-DD to YYYY-MM-DD",
       "location": "City, Country",     // "City, ST" in the US; or null
-      "cycle": "only",                 // "only" = single deadline; "last" = final of several cycles; omit for an earlier cycle
+      "cycle": "only",                 // "only" = single deadline; for multi-cycle editions the cycle number (1, 2, …)
+      "cycles": 4,                     // multi-cycle editions only: total number of cycles; badge shows "cycle/cycles"
       "status": "announced",           // or "estimated" (CFP not out; projected from last year)
       "source": "https://...",         // page the dates were read from
       "notes": ""
@@ -37,7 +38,7 @@ Upcoming conference submission deadlines, served by GitHub Pages.
 2. If a conference's notification date has passed, replace the row with the next edition (estimated from this year's dates + 1 year until its CFP appears).
 3. If an `estimated` row's CFP is now out, replace the dates with the announced ones and set `status` to `announced`.
 4. Never invent dates or URLs; read them from the official page and record it in `source`.
-5. Set `cycle`: `"only"` when this edition has a single submission deadline; `"last"` when it has several cycles (SPAA, PODS, ICDT, SIGMOD, FAST, …) and the row shows the final one; omit it for an earlier cycle. ICALP counts as `"only"` (Track A has one deadline; ignore Track B rounds). The badge disappears by itself once the paper deadline passes. Recheck `cycle` whenever a row moves to the next edition or the next cycle.
+5. Set `cycle`: `"only"` when this edition has a single submission deadline (ICALP counts as `"only"`: Track A has one deadline; ignore Track B rounds); the badge disappears once the paper deadline passes. An edition with several cycles (SPAA, PODS, ICDT, SIGMOD, FAST, …) has one row per cycle, each with `cycle` (its number) and `cycles` (the total); the page shows an `n/total` badge on every such row, in both tables. Keep all cycle rows of an edition, past ones included (the page hides a row once its notification passes), and replace them with the next edition's cycle rows only after the last cycle's notification. Don't put the cycle number in `deadline_tz`; a cycle name may follow the time (`"7:59 am EDT · spring"`).
 6. Set `updated` to today, commit, and push to `main`.
 
 ## My papers
