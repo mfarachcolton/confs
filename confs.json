@@ -317,6 +317,40 @@
     {
       "acronym": "SIGMOD",
       "full_name": "ACM SIGMOD International Conference on Management of Data",
+      "year": 2027,
+      "url": "https://2027.sigmod.org/",
+      "deadline": "2026-10-18",
+      "deadline_tz": "7:59 am EDT · round 4",
+      "abstract_deadline": "2026-10-11",
+      "abstract_tz": "7:59 am EDT",
+      "rebuttal": "2026-12-10 to 2026-12-17",
+      "notification": "2027-01-19",
+      "conf_dates": "2027-06-13 to 2027-06-18",
+      "location": "Huntington Beach, CA",
+      "cycle": "last",
+      "status": "announced",
+      "source": "https://2027.sigmod.org/calls_papers_sigmod_research.shtml",
+      "notes": "Round 4 (11:59 pm AoE deadlines). Notification of accept/reject/revision 2027-01-19; revised paper 2027-02-19; final notification 2027-03-12.",
+      "my_submissions": [
+        {
+          "title": "GRAPA: A Robust, Dynamic Learned Index",
+          "number": 2334,
+          "authors": [
+            "Yarin Shechter",
+            "Pritom Kundu",
+            "Zhonglue Wang",
+            "Michael A. Bender",
+            "Ofek Gila",
+            "Michael T. Goodrich",
+            "Hanna Komlós",
+            "Martín Farach-Colton"
+          ]
+        }
+      ]
+    },
+    {
+      "acronym": "SIGMOD",
+      "full_name": "ACM SIGMOD International Conference on Management of Data",
       "year": 2028,
       "url": "https://2028.sigmod.org/",
       "deadline": "2027-01-18",
