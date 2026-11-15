@@ -356,25 +356,6 @@
       "cycles": 1
     },
     {
-      "acronym": "COCOON",
-      "full_name": "International Computing and Combinatorics Conference",
-      "year": 2027,
-      "url": "https://cocoon2027.github.io/",
-      "deadline": "2027-02-28",
-      "deadline_tz": "6:59 am EST",
-      "abstract_deadline": null,
-      "abstract_tz": null,
-      "rebuttal": null,
-      "notification": "2027-05-06",
-      "conf_dates": "2027-07-18 to 2027-07-21",
-      "location": "Melbourne, Australia",
-      "status": "announced",
-      "source": "https://cocoon2027.github.io/call-for-papers.html",
-      "notes": "Official deadline: 2027-02-27 AoE.",
-      "cycle": 1,
-      "cycles": 1
-    },
-    {
       "acronym": "PODS",
       "full_name": "ACM Symposium on Principles of Database Systems",
       "year": 2027,
