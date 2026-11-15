@@ -797,6 +797,25 @@
       "notes": "Rebuttal period is listed as expected. Notification on or before May 3.",
       "cycle": 1,
       "cycles": 1
+    },
+    {
+      "acronym": "ASPLOS",
+      "full_name": "ACM International Conference on Architectural Support for Programming Languages and Operating Systems",
+      "year": 2027,
+      "url": "https://www.asplos-conference.org/asplos2027/",
+      "deadline": "2026-09-10",
+      "deadline_tz": "7:59 am EDT · September cycle",
+      "abstract_deadline": null,
+      "abstract_tz": null,
+      "rebuttal": "2026-12-01 to 2026-12-04",
+      "notification": "2026-12-21",
+      "conf_dates": "2027-04-11 to 2027-04-15",
+      "location": "Heraklion, Greece",
+      "status": "announced",
+      "source": "https://www.asplos-conference.org/asplos2027/cfp/",
+      "notes": "Two cycles (April, September), no separate abstract deadline; deadlines 11:59 pm AoE. April cycle 2026: paper Apr 15, response Jul 6-9, notification Jul 27. ASPLOS 2028 not posted yet; projected April and September 2027 deadlines.",
+      "cycle": 2,
+      "cycles": 2
     }
   ],
   "my_papers": [
