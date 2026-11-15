@@ -56,6 +56,9 @@ tr.is-hidden td { opacity: .55; }
 #hidden-bar { margin: 16px 0 0; font-size: 13px; color: var(--muted); }
 #hidden-bar .hide-btn { display: inline-block; margin: 0 0 0 8px; }
 .legend { font-size: 13px; color: var(--muted); margin: 14px 0 24px; }
+td.conf a.last { font: 600 11px/1.5 var(--sans); text-decoration: none; }
+a.last:hover { text-decoration: underline; }
+tr.flash td { background: var(--soon-soft); transition: background 1.5s; }
 .last { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; color: var(--soon); background: var(--soon-soft); border-radius: 4px; padding: 0 5px; margin-left: 6px; white-space: nowrap; }
 .mine { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; color: var(--accent); background: var(--accent-soft); border-radius: 4px; padding: 0 5px; margin-left: 6px; }
 .papers { margin: 0; padding: 0; list-style: none; }
@@ -150,9 +153,24 @@ td.hotel .sub { white-space: normal; }
       (h.url ? '<a href="' + esc(h.url) + '" target="_blank" rel="noopener">' + esc(h.name) + "</a>" : esc(h.name)) +
       (h.note ? '<span class="sub">' + esc(h.note) + "</span>" : "") + "</td>";
   }
+  function rowId(acr, year, cycle) { return ("r-" + acr + "-" + year + "-" + cycle).replace(/[^A-Za-z0-9-]/g, "_"); }
+  var targets = {};  // ids of rows that are shown somewhere on the page (possibly collapsed or hidden)
+  // The n/total badge links to cycle n+1 of the same edition; the last cycle links to cycle 1 of the next edition.
+  function nextId(c) {
+    if (c.cycle < c.cycles) { var id = rowId(c.acronym, c.year, c.cycle + 1); return targets[id] ? id : null; }
+    var best = null;
+    Object.keys(targets).forEach(function (k) {
+      var t = targets[k];
+      if (t.acronym === c.acronym && +t.year > +c.year && t.cycle === 1 && (!best || +t.year < +best.year)) best = t;
+    });
+    return best ? rowId(best.acronym, best.year, 1) : null;
+  }
   function cycleBadge(c) {
     if (typeof c.cycle !== "number" || !c.cycles) return "";
-    return '<span class="last" title="Submission cycle ' + c.cycle + " of " + c.cycles + '">' + c.cycle + "/" + c.cycles + "</span>";
+    var id = nextId(c), label = c.cycle + "/" + c.cycles, title = "Submission cycle " + c.cycle + " of " + c.cycles;
+    if (!id) return '<span class="last" title="' + title + '">' + label + "</span>";
+    return '<a class="last" href="#' + id + '" data-goto="' + id + '" title="' + title + " — go to the " +
+      (c.cycle < c.cycles ? "next cycle" : "next edition") + '">' + label + "</a>";
   }
   function row(c, now, isHidden, closed) {
     var est = c.status === "estimated";
@@ -174,7 +192,7 @@ td.hotel .sub { white-space: normal; }
       item("", c.deadline, c.deadline_tz);
     var btn = !keep(c) && parse(firstDeadline(c)) < now ?
       '<button type="button" class="hide-btn" data-key="' + esc(key(c)) + '">' + (isHidden ? "Unhide" : "Hide") + "</button>" : "";
-    return '<tr class="' + (est ? "estimated" : "") + (isHidden ? " is-hidden" : "") + '">' +
+    return '<tr id="' + rowId(c.acronym, c.year, c.cycle) + '" class="' + (est ? "estimated" : "") + (isHidden ? " is-hidden" : "") + '">' +
       '<td class="conf"><a href="' + esc(c.url) + '" target="_blank" rel="noopener">' + esc(c.acronym) + " " + esc(c.year) + "</a>" +
         (est ? '<span class="est">est.</span>' : "") + cycleBadge(c) + (c.pc ? '<span class="mine">On PC</span>' : "") + '<span class="full">' + (c.pc && c.pc !== "PC member" ? esc(c.pc) + " · " : "") + esc(c.full_name) + "</span>" + btn + "</td>" +
       (closed ? "" : '<td class="dl date" data-label="Deadline">' + deadlines + "</td>") +
@@ -240,10 +258,14 @@ td.hotel .sub { white-space: normal; }
       var rows = shown.filter(function (c) { return showHidden || !isHidden(c); });
       function fill(id, list) { document.querySelector("#" + id + " tbody").innerHTML = list.map(function (c) { return row(c, now, isHidden(c), true); }).join(""); }
       // In the second table, an earlier cycle of an edition is hidden unless I submitted to it.
-      var closed = rows.filter(function (c) {
+      function closedOk(c) {
         return parse(c.deadline) < now && !(c.cycle < c.cycles && !(c.my_submissions && c.my_submissions.length));
-      });
+      }
+      var closed = rows.filter(closedOk);
       var open = rows.filter(function (c) { return parse(c.deadline) >= now; });
+      targets = {};
+      shown.filter(function (c) { return parse(c.deadline) >= now || closedOk(c); })
+        .forEach(function (c) { targets[rowId(c.acronym, c.year, c.cycle)] = c; });
       function html(list) { return list.map(function (c) { return row(c, now, isHidden(c)); }).join(""); }
       document.querySelector("#upcoming tbody").innerHTML = html(open.filter(function (c) { return parse(c.deadline) <= horizon; }));
       var later = open.filter(function (c) { return parse(c.deadline) > horizon; });
@@ -268,6 +290,22 @@ td.hotel .sub { white-space: normal; }
       render();
     });
     document.querySelector("main").addEventListener("click", function (e) {
+      var g = e.target.getAttribute && e.target.getAttribute("data-goto");
+      if (g) {
+        e.preventDefault();
+        var t = targets[g];
+        if (t && isHidden(t)) showHidden = true;
+        if (t && parse(t.deadline) > horizon) { showLater = true; try { localStorage.setItem("showLater", "1"); } catch (e3) {} }
+        render();
+        var el = document.getElementById(g);
+        if (el) {
+          el.scrollIntoView({ behavior: "smooth", block: "center" });
+          history.replaceState(null, "", "#" + g);
+          el.classList.add("flash");
+          setTimeout(function () { el.classList.remove("flash"); }, 1500);
+        }
+        return;
+      }
       var k = e.target.getAttribute && e.target.getAttribute("data-key");
       if (!k) return;
       var i = hiddenKeys.indexOf(k);
