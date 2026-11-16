@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-09",
+  "updated": "2026-11-16",
   "conferences": [
     {
       "acronym": "STOC",
@@ -613,17 +613,17 @@
       "full_name": "International Conference on Machine Learning",
       "year": 2027,
       "url": "https://icml.cc/Conferences/2027",
-      "deadline": "2027-01-29",
+      "deadline": "2027-01-23",
       "deadline_tz": "6:59 am EST",
-      "abstract_deadline": "2027-01-24",
+      "abstract_deadline": "2027-01-15",
       "abstract_tz": "6:59 am EST",
-      "rebuttal": "2027-03-24 to 2027-03-30",
-      "notification": "2027-04-30",
+      "rebuttal": null,
+      "notification": "2027-05-03",
       "conf_dates": "2027-07-31 to 2027-08-06",
       "location": "Rio de Janeiro, Brazil",
-      "status": "estimated",
-      "source": "https://icml.cc/Conferences/2026/Dates",
-      "notes": "Deadlines projected from ICML 2026; the 2027 CFP and dates page are not out yet. Location (Riocentro) and conference dates are official (icml.cc/Conferences/2027: Expo Jul 31, tutorials Aug 1, main conference Aug 2-4, workshops Aug 5-6). ICML 2027 is about three weeks later in the year than ICML 2026, so the real deadlines may be later than projected. Rebuttal is reviews released through the author response deadline.",
+      "status": "announced",
+      "source": "https://icml.cc/Conferences/2027/Dates",
+      "notes": "Official deadlines: abstract Jan 14 and full paper Jan 22, 2027, 11:59 pm AoE; no extensions. Two-stage reviewing: first-stage rejections sent by Feb 23, 2027; final decisions May 3. There is an author response period, but its dates are not posted yet. Location is Riocentro (icml.cc/Conferences/2027: Expo Jul 31, tutorials Aug 1, main conference Aug 2-4, workshops Aug 5-6).",
       "cycle": 1,
       "cycles": 1
     },
