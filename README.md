@@ -54,3 +54,7 @@ A row may have `my_planned: [{title, authors}]`, papers I plan to submit there, 
 ## Theory / applied split
 
 The upcoming-deadlines part of the page is split into a Theory table and an Applied table. The theory series are listed in the `THEORY` array in index.html (STOC, FOCS, SODA, SOSA, ICALP, ESA, ITCS, LATIN, COLT, PODC, SPAA, PODS); every other series appears under Applied.
+
+## Rolling series (VLDB)
+
+PVLDB has 12 monthly deadlines per volume (the 1st of each month, 5:00 pm Pacific; abstract by the 25th of the previous month). Its rows carry `"rolling": true` and `"cycles": 12`, one row per monthly cycle, for two volumes (VLDB YYYY = PVLDB volume YYYY-2007, deadlines April 1 of YYYY-1 through March 1 of YYYY). The page shows only the next upcoming VLDB deadline; clicking its n/12 badge steps the row to the following month. Past rolling cycles appear in the second table only if they have my_submissions.

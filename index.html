@@ -179,8 +179,16 @@ td.hotel .sub { white-space: normal; }
     });
     return best ? rowId(best.acronym, best.year, 1) : null;
   }
+  // Rolling series (VLDB: monthly deadlines) show one upcoming row; its badge steps to the next deadline in place.
+  var rollNext = {};
   function cycleBadge(c) {
     if (typeof c.cycle !== "number" || !c.cycles) return "";
+    if (c.rolling) {
+      var lbl = c.cycle + "/" + c.cycles, ttl = "Monthly deadline " + c.cycle + " of " + c.cycles;
+      return rollNext[c.acronym] ?
+        '<a class="last" href="#" data-roll="' + esc(c.acronym) + '" title="' + ttl + ' — show the next monthly deadline">' + lbl + "</a>" :
+        '<span class="last" title="' + ttl + '">' + lbl + "</span>";
+    }
     var id = nextId(c), label = c.cycle + "/" + c.cycles, title = "Submission cycle " + c.cycle + " of " + c.cycles;
     if (!id) return '<span class="last" title="' + title + '">' + label + "</span>";
     return '<a class="last" href="#' + id + '" data-goto="' + id + '" title="' + title + " — go to the " +
@@ -264,7 +272,7 @@ td.hotel .sub { white-space: normal; }
       .sort(function (a, b) { return parse(a.deadline) - parse(b.deadline); });
     var shown = list.filter(function (c) { return parse(c.deadline) >= now || !c.notification || parse(c.notification) >= now; });
     var nd = new Date(now), horizon = Date.UTC(nd.getUTCFullYear(), nd.getUTCMonth() + 6, nd.getUTCDate());
-    var STORE = "hiddenConferences", showHidden = false, hiddenKeys = [], showLater = {};
+    var STORE = "hiddenConferences", showHidden = false, hiddenKeys = [], showLater = {}, rollOffset = {};
     AREAS.forEach(function (a) { try { showLater[a] = localStorage.getItem("showLater-" + a) === "1"; } catch (e) {} });
     function setLater(a, v) { showLater[a] = v; try { localStorage.setItem("showLater-" + a, v ? "1" : "0"); } catch (e) {} }
     try { hiddenKeys = JSON.parse(localStorage.getItem(STORE)) || []; } catch (e) {}
@@ -274,12 +282,22 @@ td.hotel .sub { white-space: normal; }
       function fill(id, list) { document.querySelector("#" + id + " tbody").innerHTML = list.map(function (c) { return row(c, now, isHidden(c), true); }).join(""); }
       // In the second table, an earlier cycle of an edition is hidden unless I submitted to it.
       function closedOk(c) {
-        return parse(c.deadline) < now && !(c.cycle < c.cycles && !(c.my_submissions && c.my_submissions.length));
+        var subs = c.my_submissions && c.my_submissions.length;
+        return parse(c.deadline) < now && (subs || !(c.rolling || c.cycle < c.cycles));
       }
       var closed = rows.filter(closedOk);
       var open = rows.filter(function (c) { return parse(c.deadline) >= now; });
+      // Keep only the selected upcoming row of each rolling series.
+      var rollList = {};
+      open.forEach(function (c) { if (c.rolling) (rollList[c.acronym] = rollList[c.acronym] || []).push(c); });
+      var rollPick = [];
+      Object.keys(rollList).forEach(function (a) {
+        var l = rollList[a], i = Math.min(rollOffset[a] || 0, l.length - 1);
+        rollOffset[a] = i; rollPick.push(l[i]); rollNext[a] = i + 1 < l.length;
+      });
+      open = open.filter(function (c) { return !c.rolling || rollPick.indexOf(c) >= 0; });
       targets = {};
-      shown.filter(function (c) { return parse(c.deadline) >= now || closedOk(c); })
+      shown.filter(function (c) { return (parse(c.deadline) >= now && !c.rolling) || rollPick.indexOf(c) >= 0 || closedOk(c); })
         .forEach(function (c) { targets[rowId(c.acronym, c.year, c.cycle)] = c; });
       function html(list) { return list.map(function (c) { return row(c, now, isHidden(c)); }).join(""); }
       AREAS.forEach(function (a) {
@@ -307,6 +325,26 @@ td.hotel .sub { white-space: normal; }
       b.addEventListener("click", function () { var a = b.getAttribute("data-area"); setLater(a, !showLater[a]); render(); });
     });
     document.querySelector("main").addEventListener("click", function (e) {
+      var ro = e.target.getAttribute && e.target.getAttribute("data-roll");
+      if (ro) {
+        e.preventDefault();
+        var before = e.target.closest("tr").getBoundingClientRect().top;
+        rollOffset[ro] = (rollOffset[ro] || 0) + 1;
+        render();
+        function picked() {
+          var x = null;
+          document.querySelectorAll("tr[id^='r-" + ro + "-']").forEach(function (r) { if (!x && r.closest("table").classList.contains("upcoming")) x = r; });
+          return x;
+        }
+        var row2 = picked();
+        if (row2 && row2.closest("tbody").hidden) { setLater(area({ acronym: ro }), true); render(); row2 = picked(); }
+        if (row2) {
+          window.scrollBy(0, row2.getBoundingClientRect().top - before);
+          row2.classList.add("flash");
+          setTimeout(function () { row2.classList.remove("flash"); }, 1500);
+        }
+        return;
+      }
       var g = e.target.getAttribute && e.target.getAttribute("data-goto");
       if (g) {
         e.preventDefault();
