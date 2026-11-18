@@ -76,8 +76,9 @@ tr:has(+ tr.subs) td { border-bottom: 0; }
 tr.subs .kind { margin-bottom: 4px; }
 tr.subs .gap { display: block; height: 12px; }
 @media (max-width: 960px) { tr.subs td.pp > * { grid-column: 2; } }
-#later-toggle td { padding: 14px 12px; }
-#later-toggle .hide-btn { margin: 0; color: var(--accent); }
+tbody.later-toggle td { padding: 14px 12px; }
+tbody.later-toggle .hide-btn { margin: 0; color: var(--accent); }
+h2.area { margin-top: 28px; }
 td.hotel .sub { white-space: normal; }
 
 @media (max-width: 960px) {
@@ -111,11 +112,20 @@ td.hotel .sub { white-space: normal; }
   <h1>Conference Deadlines</h1>
   <p class="legend"><span class="est">est.</span> = call for papers not yet out; dates projected from the previous edition. <span class="last">2/4</span> = the second of four submission cycles for this edition (each cycle has its own row); <span class="last">1/1</span> = the only submission deadline. Rebuttal: the period when authors can respond to reviews; — = none listed.</p>
 
-  <table id="upcoming">
+  <h2 class="area" id="h-theory">Theory</h2>
+  <table id="upcoming-theory" class="upcoming">
     <thead><tr><th>Conference</th><th>Submission deadline</th><th>Rebuttal</th><th>Notification</th><th>Location</th><th>Conference dates</th></tr></thead>
     <tbody></tbody>
-    <tbody id="later-toggle"><tr><td colspan="6"><button type="button" class="hide-btn" id="toggle-later"></button></td></tr></tbody>
-    <tbody id="later" hidden></tbody>
+    <tbody class="later-toggle"><tr><td colspan="6"><button type="button" class="hide-btn toggle-later" data-area="theory"></button></td></tr></tbody>
+    <tbody class="later" hidden></tbody>
+  </table>
+
+  <h2 class="area" id="h-applied">Applied</h2>
+  <table id="upcoming-applied" class="upcoming">
+    <thead><tr><th>Conference</th><th>Submission deadline</th><th>Rebuttal</th><th>Notification</th><th>Location</th><th>Conference dates</th></tr></thead>
+    <tbody></tbody>
+    <tbody class="later-toggle"><tr><td colspan="6"><button type="button" class="hide-btn toggle-later" data-area="applied"></button></td></tr></tbody>
+    <tbody class="later" hidden></tbody>
   </table>
 
   <h2 id="closed-h">Submission deadline passed</h2>
@@ -144,6 +154,10 @@ td.hotel .sub { white-space: normal; }
     return MONTHS[a.getUTCMonth()] + " " + a.getUTCDate() + " – " + MONTHS[b.getUTCMonth()] + " " + b.getUTCDate() + ", " + b.getUTCFullYear();
   }
   function firstDeadline(c) { return c.abstract_deadline || c.deadline; }
+  // Theory vs. applied split of the upcoming-deadlines table; any series not listed here is applied.
+  var THEORY = ["STOC","FOCS","SODA","SOSA","ICALP","ESA","ITCS","LATIN","COLT","PODC","SPAA","PODS"];
+  function area(c) { return THEORY.indexOf(c.acronym) >= 0 ? "theory" : "applied"; }
+  var AREAS = ["theory", "applied"];
   function keep(c) { return !!(c.pc || (c.my_submissions && c.my_submissions.length) || (c.my_planned && c.my_planned.length)); }
   function key(c) { return c.acronym + "|" + c.year + "|" + c.deadline; }
   function hotelCell(c) {
@@ -250,8 +264,9 @@ td.hotel .sub { white-space: normal; }
       .sort(function (a, b) { return parse(a.deadline) - parse(b.deadline); });
     var shown = list.filter(function (c) { return parse(c.deadline) >= now || !c.notification || parse(c.notification) >= now; });
     var nd = new Date(now), horizon = Date.UTC(nd.getUTCFullYear(), nd.getUTCMonth() + 6, nd.getUTCDate());
-    var STORE = "hiddenConferences", showHidden = false, hiddenKeys = [], showLater = false;
-    try { showLater = localStorage.getItem("showLater") === "1"; } catch (e) {}
+    var STORE = "hiddenConferences", showHidden = false, hiddenKeys = [], showLater = {};
+    AREAS.forEach(function (a) { try { showLater[a] = localStorage.getItem("showLater-" + a) === "1"; } catch (e) {} });
+    function setLater(a, v) { showLater[a] = v; try { localStorage.setItem("showLater-" + a, v ? "1" : "0"); } catch (e) {} }
     try { hiddenKeys = JSON.parse(localStorage.getItem(STORE)) || []; } catch (e) {}
     function isHidden(c) { return !keep(c) && hiddenKeys.indexOf(key(c)) >= 0; }
     function render() {
@@ -267,15 +282,19 @@ td.hotel .sub { white-space: normal; }
       shown.filter(function (c) { return parse(c.deadline) >= now || closedOk(c); })
         .forEach(function (c) { targets[rowId(c.acronym, c.year, c.cycle)] = c; });
       function html(list) { return list.map(function (c) { return row(c, now, isHidden(c)); }).join(""); }
-      document.querySelector("#upcoming tbody").innerHTML = html(open.filter(function (c) { return parse(c.deadline) <= horizon; }));
-      var later = open.filter(function (c) { return parse(c.deadline) > horizon; });
-      var lt = document.getElementById("later");
-      lt.innerHTML = html(later);
-      lt.hidden = !showLater;
-      document.getElementById("later-toggle").hidden = !later.length;
-      document.getElementById("toggle-later").textContent = showLater ?
-        "Hide deadlines more than 6 months away" :
-        "Show " + later.length + (later.length === 1 ? " conference" : " conferences") + " with deadlines more than 6 months away";
+      AREAS.forEach(function (a) {
+        var t = document.getElementById("upcoming-" + a), inArea = open.filter(function (c) { return area(c) === a; });
+        t.tBodies[0].innerHTML = html(inArea.filter(function (c) { return parse(c.deadline) <= horizon; }));
+        var later = inArea.filter(function (c) { return parse(c.deadline) > horizon; });
+        var lt = t.querySelector("tbody.later");
+        lt.innerHTML = html(later);
+        lt.hidden = !showLater[a];
+        t.querySelector("tbody.later-toggle").hidden = !later.length;
+        t.querySelector(".toggle-later").textContent = showLater[a] ?
+          "Hide deadlines more than 6 months away" :
+          "Show " + later.length + (later.length === 1 ? " conference" : " conferences") + " with deadlines more than 6 months away";
+        t.hidden = document.getElementById("h-" + a).hidden = !inArea.length;
+      });
       fill("closed", closed);
       document.querySelector("#closed tbody").insertAdjacentHTML("afterbegin", mine.map(mineRow).join(""));
       document.getElementById("closed").hidden = document.getElementById("closed-h").hidden = !(closed.length || mine.length);
@@ -284,10 +303,8 @@ td.hotel .sub { white-space: normal; }
       bar.hidden = !n;
       bar.innerHTML = n + " hidden" + '<button type="button" class="hide-btn" id="toggle-hidden">' + (showHidden ? "Don't show" : "Show") + "</button>";
     }
-    document.getElementById("toggle-later").addEventListener("click", function () {
-      showLater = !showLater;
-      try { localStorage.setItem("showLater", showLater ? "1" : "0"); } catch (e) {}
-      render();
+    document.querySelectorAll(".toggle-later").forEach(function (b) {
+      b.addEventListener("click", function () { var a = b.getAttribute("data-area"); setLater(a, !showLater[a]); render(); });
     });
     document.querySelector("main").addEventListener("click", function (e) {
       var g = e.target.getAttribute && e.target.getAttribute("data-goto");
@@ -295,11 +312,11 @@ td.hotel .sub { white-space: normal; }
         e.preventDefault();
         var t = targets[g];
         if (t && isHidden(t)) showHidden = true;
-        if (t && parse(t.deadline) > horizon) { showLater = true; try { localStorage.setItem("showLater", "1"); } catch (e3) {} }
+        if (t && parse(t.deadline) > horizon) setLater(area(t), true);
         render();
         var el = document.getElementById(g);
         if (el) {
-          el.scrollIntoView({ behavior: "smooth", block: "center" });
+          el.scrollIntoView({ block: "center" });
           history.replaceState(null, "", "#" + g);
           el.classList.add("flash");
           setTimeout(function () { el.classList.remove("flash"); }, 1500);
