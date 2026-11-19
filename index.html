@@ -80,6 +80,31 @@ tbody.later-toggle td { padding: 14px 12px; }
 tbody.later-toggle .hide-btn { margin: 0; color: var(--accent); }
 h2.area { margin-top: 28px; }
 td.hotel .sub { white-space: normal; }
+a.after { color: inherit; text-decoration: underline dotted; text-underline-offset: 3px; }
+a.after:hover { color: var(--accent); }
+/* Month navigation: horizontal strip on narrow screens, left sidebar on wide ones. */
+#months { position: sticky; top: 0; z-index: 5; background: var(--bg); border-bottom: 1px solid var(--rule);
+  display: flex; align-items: center; gap: 4px 14px; overflow-x: auto; padding: 8px 16px; font-size: 13px; white-space: nowrap; }
+#months .mh { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); }
+#months .mh .key { display: block; text-transform: none; letter-spacing: 0; font-weight: 400; }
+#months .yr { font-size: 11px; font-weight: 600; color: var(--muted); letter-spacing: .06em; }
+#months .m { display: flex; align-items: baseline; gap: 6px; padding: 1px 6px; border-radius: 4px; }
+#months .m.active { background: var(--soon-soft); }
+#months .mn { min-width: 2.2em; font-weight: 600; }
+#months a { font-size: 12px; font-variant-numeric: tabular-nums; }
+#months .none { font-size: 12px; color: var(--rule); }
+tr[id] { scroll-margin-top: 64px; }
+@media (min-width: 1200px) {
+  #months { position: fixed; top: 84px; bottom: 16px; left: max(12px, calc(50vw - 520px - 172px)); width: 160px;
+    display: block; overflow-y: auto; overflow-x: hidden; border: 0; padding: 0; background: transparent; }
+  #months .mh { margin-bottom: 10px; }
+  #months .yr { margin: 12px 0 2px 6px; }
+  #months .m + .m { margin-top: 1px; }
+  tr[id] { scroll-margin-top: 16px; }
+}
+@media (min-width: 1200px) and (max-width: 1383px) {
+  .wrap { margin-left: 184px; margin-right: 0; }
+}
 
 @media (max-width: 960px) {
   .wrap { padding: 0 16px; }
@@ -108,9 +133,10 @@ td.hotel .sub { white-space: normal; }
     <nav><a href="https://www.farach-colton.com">Home</a></nav>
   </div>
 </header>
+<nav id="months" aria-label="Paper deadlines by month" hidden></nav>
 <main class="wrap">
   <h1>Conference Deadlines</h1>
-  <p class="legend"><span class="est">est.</span> = call for papers not yet out; dates projected from the previous edition. <span class="last">2/4</span> = the second of four submission cycles for this edition (each cycle has its own row); <span class="last">1/1</span> = the only submission deadline. Rebuttal: the period when authors can respond to reviews; — = none listed.</p>
+  <p class="legend"><span class="est">est.</span> = call for papers not yet out; dates projected from the previous edition. <span class="last">2/4</span> = the second of four submission cycles for this edition (each cycle has its own row); <span class="last">1/1</span> = the only submission deadline. Rebuttal: the period when authors can respond to reviews; — = none listed. Click a notification date to jump to the deadlines that follow it (where to send a paper next); the month list jumps to the deadlines in a month.</p>
 
   <h2 class="area" id="h-theory">Theory</h2>
   <table id="upcoming-theory" class="upcoming">
@@ -219,7 +245,9 @@ td.hotel .sub { white-space: normal; }
         (est ? '<span class="est">est.</span>' : "") + cycleBadge(c) + (c.pc ? '<span class="mine">On PC</span>' : "") + '<span class="full">' + (c.pc && c.pc !== "PC member" ? esc(c.pc) + " · " : "") + esc(c.full_name) + "</span>" + btn + "</td>" +
       (closed ? "" : '<td class="dl date" data-label="Deadline">' + deadlines + "</td>") +
       '<td class="rb date" data-label="Rebuttal"><span class="d">' + range(c.rebuttal) + "</span></td>" +
-      '<td class="nt date" data-label="Notification"><span class="d">' + fmt(c.notification) + "</span></td>" +
+      '<td class="nt date" data-label="Notification"><span class="d">' + (c.notification ?
+        '<a href="#" class="after" data-after="' + esc(c.notification) + '" data-area="' + area(c) + '" title="Jump to ' + area(c) + ' deadlines after this notification">' + fmt(c.notification) + "</a>" :
+        fmt(c.notification)) + "</span></td>" +
       '<td data-label="Location">' + (c.location ? esc(c.location) : "TBA") + "</td>" +
       (closed ? hotelCell(c) : "") +
       '<td class="date" data-label="Dates">' + range(c.conf_dates) + "</td></tr>" + subsRow(c, isHidden);
@@ -277,6 +305,75 @@ td.hotel .sub { white-space: normal; }
     function setLater(a, v) { showLater[a] = v; try { localStorage.setItem("showLater-" + a, v ? "1" : "0"); } catch (e) {} }
     try { hiddenKeys = JSON.parse(localStorage.getItem(STORE)) || []; } catch (e) {}
     function isHidden(c) { return !keep(c) && hiddenKeys.indexOf(key(c)) >= 0; }
+    var activeMonth = null;
+    function monthKey(d) { return d.slice(0, 7); }
+    function buildNav(upcoming) {
+      var m = {}, keys = [];
+      upcoming.forEach(function (c) {
+        var k = monthKey(c.deadline), a = area(c);
+        if (!m[k]) { m[k] = { theory: 0, applied: 0 }; keys.push(k); }
+        m[k][a]++;
+      });
+      keys.sort();
+      var nav = document.getElementById("months"), html = '<div class="mh">Paper deadlines<span class="key">T = theory, A = applied</span></div>', yr = null;
+      keys.forEach(function (k) {
+        var y = k.slice(0, 4), mo = +k.slice(5, 7) - 1;
+        if (y !== yr) { html += '<div class="yr">' + y + "</div>"; yr = y; }
+        html += '<div class="m' + (k === activeMonth ? " active" : "") + '" data-m="' + k + '"><span class="mn">' + MONTHS[mo] + "</span>" +
+          AREAS.map(function (a) {
+            var n = m[k][a], L = a === "theory" ? "T" : "A";
+            return n ? '<a href="#" data-jump="' + a + '" data-from="' + k + '-01" title="' + n + " " + a + " deadline" + (n > 1 ? "s" : "") + " in " + MONTHS[mo] + " " + y + '">' + L + " " + n + "</a>" :
+              '<span class="none">' + L + " 0</span>";
+          }).join("") + "</div>";
+      });
+      nav.innerHTML = html;
+      nav.hidden = !keys.length;
+    }
+    // Show the first deadlines on or after `from` in the given area's table: rolling series step to that month,
+    // the collapsed section opens if needed, and the matching month is marked in the navigation.
+    function jump(a, from, flashMonth) {
+      var f = parse(from);
+      var rl = {};
+      shown.forEach(function (c) { if (c.rolling && parse(c.deadline) >= now) (rl[c.acronym] = rl[c.acronym] || []).push(c); });
+      Object.keys(rl).forEach(function (acr) {
+        var l = rl[acr], i = 0;
+        while (i < l.length - 1 && parse(l[i].deadline) < f) i++;
+        rollOffset[acr] = i;
+      });
+      var t = document.getElementById("upcoming-" + a);
+      function first() {
+        var hit = null;
+        t.querySelectorAll("tr[id]").forEach(function (r) {
+          var c = targets[r.id];
+          if (!hit && c && parse(c.deadline) >= f) hit = r;
+        });
+        return hit;
+      }
+      render();
+      var r = first();
+      if (r && r.closest("tbody").hidden) { setLater(a, true); render(); r = first(); }
+      var c = r && targets[r.id];
+      activeMonth = c ? monthKey(c.deadline) : monthKey(from);
+      render();
+      r = first();
+      document.querySelectorAll("#months .m").forEach(function (m) {
+        m.classList.toggle("active", m.getAttribute("data-m") === activeMonth);
+        if (m.getAttribute("data-m") === activeMonth) m.scrollIntoView({ block: "nearest", inline: "center" });
+      });
+      if (!r) { t.scrollIntoView({ block: "end" }); return; }
+      r.scrollIntoView({ block: "start" });
+      var rowsToFlash = [r];
+      if (flashMonth) t.querySelectorAll("tr[id]").forEach(function (x) {
+        var cx = targets[x.id]; if (x !== r && cx && monthKey(cx.deadline) === activeMonth) rowsToFlash.push(x);
+      });
+      rowsToFlash.forEach(function (x) { x.classList.add("flash"); setTimeout(function () { x.classList.remove("flash"); }, 1600); });
+    }
+    document.getElementById("months").addEventListener("click", function (e) {
+      var a = e.target.getAttribute && e.target.getAttribute("data-jump");
+      if (!a) return;
+      e.preventDefault();
+      jump(a, e.target.getAttribute("data-from"), true);
+    });
     function render() {
       var rows = shown.filter(function (c) { return showHidden || !isHidden(c); });
       function fill(id, list) { document.querySelector("#" + id + " tbody").innerHTML = list.map(function (c) { return row(c, now, isHidden(c), true); }).join(""); }
@@ -313,6 +410,7 @@ td.hotel .sub { white-space: normal; }
           "Show " + later.length + (later.length === 1 ? " conference" : " conferences") + " with deadlines more than 6 months away";
         t.hidden = document.getElementById("h-" + a).hidden = !inArea.length;
       });
+      buildNav(rows.filter(function (c) { return parse(c.deadline) >= now; }));
       fill("closed", closed);
       document.querySelector("#closed tbody").insertAdjacentHTML("afterbegin", mine.map(mineRow).join(""));
       document.getElementById("closed").hidden = document.getElementById("closed-h").hidden = !(closed.length || mine.length);
@@ -325,6 +423,13 @@ td.hotel .sub { white-space: normal; }
       b.addEventListener("click", function () { var a = b.getAttribute("data-area"); setLater(a, !showLater[a]); render(); });
     });
     document.querySelector("main").addEventListener("click", function (e) {
+      var af = e.target.getAttribute && e.target.getAttribute("data-after");
+      if (af) {
+        e.preventDefault();
+        var d1 = new Date(parse(af).getTime() + 864e5);
+        jump(e.target.getAttribute("data-area"), d1.toISOString().slice(0, 10), false);
+        return;
+      }
       var ro = e.target.getAttribute && e.target.getAttribute("data-roll");
       if (ro) {
         e.preventDefault();
