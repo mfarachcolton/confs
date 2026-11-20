@@ -287,6 +287,14 @@
             "Hanna Komlós",
             "Yarin Shechter"
           ]
+        },
+        {
+          "title": "Constant-Time Counting Filters with Fixed Counter Batches",
+          "authors": [
+            "Martín Farach-Colton",
+            "Rob Johnson",
+            "Zofia Stefankovic"
+          ]
         }
       ],
       "cycle": 2,
