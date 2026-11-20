@@ -295,6 +295,19 @@
             "Rob Johnson",
             "Zofia Stefankovic"
           ]
+        },
+        {
+          "title": "A High-Probability Seismic Bound for Treaps and its Applications to Dynamic Search Tree Navigation",
+          "authors": [
+            "Michael A. Bender",
+            "David Eppstein",
+            "Martín Farach-Colton",
+            "Michael T. Goodrich",
+            "Jingxun Liang",
+            "Michael Mitzenmacher",
+            "Robert E. Tarjan",
+            "Krzysztof Turowski"
+          ]
         }
       ],
       "cycle": 2,
