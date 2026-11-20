@@ -312,7 +312,12 @@
             "Michael Mitzenmacher",
             "Robert E. Tarjan",
             "Krzysztof Turowski"
-          ]
+          ],
+          "overleaf": {
+            "project": "6976b57d6842b67ea287b19a",
+            "file": "main.tex",
+            "title_seen": "A High-Probability Seismic Bound for Treaps and its Applications to Dynamic Search Tree Navigation"
+          }
         }
       ],
       "cycle": 2,

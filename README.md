@@ -50,6 +50,7 @@ Each paper may have `talk: {date, time, session, room}` once the program is out.
 Rows in `conferences` may have `hotel: {name, url, note}`; it is shown in the second table.
 A row may have `pc` ("PC member", "PC chair", …): shown as an "On PC" badge; rows with `pc` or `my_submissions` have no Hide button and are never hidden.
 A row may have `my_planned: [{title, authors}]`, papers I plan to submit there, shown as "Planning to submit" under the row (set by the paper-status skill).
+A planned paper may carry `overleaf: {project, file, title_seen}` (its Overleaf project id, main .tex, and the last title read there); the page ignores it, and a background job (`~/.claude/skills/paper-status/scripts/sync_planned_titles.py`) uses it to update `title` when the paper is retitled on Overleaf.
 
 ## Theory / applied split
 
