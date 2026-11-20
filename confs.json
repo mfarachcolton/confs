@@ -297,7 +297,8 @@
           ],
           "overleaf": {
             "project": "6ae230c9f7dbb8dab0ecbda9",
-            "file": "counting_filter.tex"
+            "file": "counting_filter.tex",
+            "title_seen": "Constant-Time Counting Filters with Fixed Counter Batches"
           }
         },
         {
