@@ -93,11 +93,14 @@ a.after:hover { color: var(--accent); }
 #months .mn { min-width: 2.2em; font-weight: 600; }
 #months a { font-size: 12px; font-variant-numeric: tabular-nums; }
 #months .none { font-size: 12px; color: var(--rule); }
+#months .mh.sec { margin-left: 10px; }
+@media (min-width: 1200px) { #months .mh.sec { margin-left: 0; } }
 tr[id] { scroll-margin-top: 64px; }
 @media (min-width: 1200px) {
   #months { position: fixed; top: 84px; bottom: 16px; left: max(12px, calc(50vw - 520px - 172px)); width: 160px;
     display: block; overflow-y: auto; overflow-x: hidden; border: 0; padding: 0; background: transparent; }
   #months .mh { margin-bottom: 10px; }
+  #months .mh.sec { margin-top: 22px; }
   #months .yr { margin: 12px 0 2px 6px; }
   #months .m + .m { margin-top: 1px; }
   tr[id] { scroll-margin-top: 16px; }
@@ -133,10 +136,10 @@ tr[id] { scroll-margin-top: 64px; }
     <nav><a href="https://www.farach-colton.com">Home</a></nav>
   </div>
 </header>
-<nav id="months" aria-label="Paper deadlines by month" hidden></nav>
+<nav id="months" aria-label="Paper deadlines and notifications by month" hidden></nav>
 <main class="wrap">
   <h1>Conference Deadlines</h1>
-  <p class="legend"><span class="est">est.</span> = call for papers not yet out; dates projected from the previous edition. <span class="last">2/4</span> = the second of four submission cycles for this edition (each cycle has its own row); <span class="last">1/1</span> = the only submission deadline. Rebuttal: the period when authors can respond to reviews; — = none listed. Click a notification date to jump to the deadlines that follow it (where to send a paper next); the month list jumps to the deadlines in a month.</p>
+  <p class="legend"><span class="est">est.</span> = call for papers not yet out; dates projected from the previous edition. <span class="last">2/4</span> = the second of four submission cycles for this edition (each cycle has its own row); <span class="last">1/1</span> = the only submission deadline. Rebuttal: the period when authors can respond to reviews; — = none listed. Click a notification date to jump to the deadlines that follow it (where to send a paper next); the month list jumps to the deadlines in a month, and its Notifications part to the decisions due in a month.</p>
 
   <h2 class="area" id="h-theory">Theory</h2>
   <table id="upcoming-theory" class="upcoming">
@@ -179,13 +182,13 @@ tr[id] { scroll-margin-top: 64px; }
       return MONTHS[a.getUTCMonth()] + " " + a.getUTCDate() + "–" + b.getUTCDate() + ", " + a.getUTCFullYear();
     return MONTHS[a.getUTCMonth()] + " " + a.getUTCDate() + " – " + MONTHS[b.getUTCMonth()] + " " + b.getUTCDate() + ", " + b.getUTCFullYear();
   }
-  function firstDeadline(c) { return c.abstract_deadline || c.deadline; }
   // Theory vs. applied split of the upcoming-deadlines table; any series not listed here is applied.
   var THEORY = ["STOC","FOCS","SODA","SOSA","ICALP","ESA","ITCS","LATIN","COLT","PODC","SPAA","PODS"];
   function area(c) { return THEORY.indexOf(c.acronym) >= 0 ? "theory" : "applied"; }
   var AREAS = ["theory", "applied"];
   function keep(c) { return !!(c.pc || (c.my_submissions && c.my_submissions.length) || (c.my_planned && c.my_planned.length)); }
-  function key(c) { return c.acronym + "|" + c.year + "|" + c.deadline; }
+  // A rolling series (VLDB) is hidden a whole volume at a time, other series one row (cycle) at a time.
+  function key(c) { return c.acronym + "|" + c.year + "|" + (c.rolling ? "rolling" : c.deadline); }
   function hotelCell(c) {
     var h = c.hotel;
     if (!h) return '<td data-label="Hotel">—</td>';
@@ -238,7 +241,7 @@ tr[id] { scroll-margin-top: 64px; }
     var deadlines = c.abstract_deadline ?
       item("Abstract", c.abstract_deadline, c.abstract_tz) + item("Paper", c.deadline, c.deadline_tz) :
       item("", c.deadline, c.deadline_tz);
-    var btn = !keep(c) && parse(firstDeadline(c)) < now ?
+    var btn = !keep(c) ?
       '<button type="button" class="hide-btn" data-key="' + esc(key(c)) + '">' + (isHidden ? "Unhide" : "Hide") + "</button>" : "";
     return '<tr id="' + rowId(c.acronym, c.year, c.cycle) + '" class="' + (est ? "estimated" : "") + (isHidden ? " is-hidden" : "") + '">' +
       '<td class="conf"><a href="' + esc(c.url) + '" target="_blank" rel="noopener">' + esc(c.acronym) + " " + esc(c.year) + "</a>" +
@@ -307,7 +310,7 @@ tr[id] { scroll-margin-top: 64px; }
     function isHidden(c) { return !keep(c) && hiddenKeys.indexOf(key(c)) >= 0; }
     var activeMonth = null;
     function monthKey(d) { return d.slice(0, 7); }
-    function buildNav(upcoming) {
+    function buildNav(upcoming, closed) {
       var m = {}, keys = [];
       upcoming.forEach(function (c) {
         var k = monthKey(c.deadline), a = area(c);
@@ -326,8 +329,28 @@ tr[id] { scroll-margin-top: 64px; }
               '<span class="none">' + L + " 0</span>";
           }).join("") + "</div>";
       });
+      // Second table: months in which decisions come out.
+      var nm = {}, nkeys = [];
+      closed.forEach(function (c) {
+        if (!c.notification) return;
+        var k = monthKey(c.notification);
+        if (!nm[k]) { nm[k] = 0; nkeys.push(k); }
+        nm[k]++;
+      });
+      nkeys.sort();
+      if (nkeys.length) {
+        html += '<div class="mh sec">Notifications<span class="key">submission deadline passed</span></div>';
+        yr = null;
+        nkeys.forEach(function (k) {
+          var y = k.slice(0, 4), mo = +k.slice(5, 7) - 1, n = nm[k];
+          if (y !== yr) { html += '<div class="yr">' + y + "</div>"; yr = y; }
+          html += '<div class="m' + ("n" + k === activeMonth ? " active" : "") + '" data-m="n' + k + '"><span class="mn">' + MONTHS[mo] + "</span>" +
+            '<a href="#" data-notif="' + k + '" title="' + n + " notification" + (n > 1 ? "s" : "") + " in " + MONTHS[mo] + " " + y + '">' +
+            n + " decision" + (n > 1 ? "s" : "") + "</a></div>";
+        });
+      }
       nav.innerHTML = html;
-      nav.hidden = !keys.length;
+      nav.hidden = !keys.length && !nkeys.length;
     }
     // Show the first deadlines on or after `from` in the given area's table: rolling series step to that month,
     // the collapsed section opens if needed, and the matching month is marked in the navigation.
@@ -368,7 +391,25 @@ tr[id] { scroll-margin-top: 64px; }
       });
       rowsToFlash.forEach(function (x) { x.classList.add("flash"); setTimeout(function () { x.classList.remove("flash"); }, 1600); });
     }
+    // Show the second-table rows whose notification falls in month k.
+    function jumpNotif(k) {
+      activeMonth = "n" + k;
+      render();
+      document.querySelectorAll("#months .m").forEach(function (m) {
+        m.classList.toggle("active", m.getAttribute("data-m") === activeMonth);
+        if (m.getAttribute("data-m") === activeMonth) m.scrollIntoView({ block: "nearest", inline: "center" });
+      });
+      var hits = [];
+      document.querySelectorAll("#closed tr[id]").forEach(function (r) {
+        var c = targets[r.id]; if (c && c.notification && monthKey(c.notification) === k) hits.push(r);
+      });
+      if (!hits.length) return;
+      hits[0].scrollIntoView({ block: "start" });
+      hits.forEach(function (x) { x.classList.add("flash"); setTimeout(function () { x.classList.remove("flash"); }, 1600); });
+    }
     document.getElementById("months").addEventListener("click", function (e) {
+      var nk = e.target.getAttribute && e.target.getAttribute("data-notif");
+      if (nk) { e.preventDefault(); jumpNotif(nk); return; }
       var a = e.target.getAttribute && e.target.getAttribute("data-jump");
       if (!a) return;
       e.preventDefault();
@@ -410,8 +451,8 @@ tr[id] { scroll-margin-top: 64px; }
           "Show " + later.length + (later.length === 1 ? " conference" : " conferences") + " with deadlines more than 6 months away";
         t.hidden = document.getElementById("h-" + a).hidden = !inArea.length;
       });
-      buildNav(rows.filter(function (c) { return parse(c.deadline) >= now; }));
       fill("closed", closed);
+      buildNav(rows.filter(function (c) { return parse(c.deadline) >= now; }), closed);
       document.querySelector("#closed tbody").insertAdjacentHTML("afterbegin", mine.map(mineRow).join(""));
       document.getElementById("closed").hidden = document.getElementById("closed-h").hidden = !(closed.length || mine.length);
       var n = shown.filter(isHidden).length, bar = document.getElementById("hidden-bar");
