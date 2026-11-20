@@ -106,7 +106,27 @@
       "source": "https://icalp.uj.edu.pl/track-b/",
       "notes": "Dates/location official; Track A deadline TBA, projected from 2026. Track B round 1 closed 2026-09-15. Track B only has a rebuttal (round 1: 2026-11-05 to 2026-11-09; round 2 TBA); Track A has none listed.",
       "cycle": 1,
-      "cycles": 1
+      "cycles": 1,
+      "my_planned": [
+        {
+          "title": "A High-Probability Seismic Bound for Treaps and its Applications to Dynamic Search Tree Navigation",
+          "authors": [
+            "Michael A. Bender",
+            "David Eppstein",
+            "Martín Farach-Colton",
+            "Michael T. Goodrich",
+            "Jingxun Liang",
+            "Michael Mitzenmacher",
+            "Robert E. Tarjan",
+            "Krzysztof Turowski"
+          ],
+          "overleaf": {
+            "project": "6976b57d6842b67ea287b19a",
+            "file": "main.tex",
+            "title_seen": "A High-Probability Seismic Bound for Treaps and its Applications to Dynamic Search Tree Navigation"
+          }
+        }
+      ]
     },
     {
       "acronym": "ESA",
@@ -299,24 +319,6 @@
             "project": "6ae230c9f7dbb8dab0ecbda9",
             "file": "counting_filter.tex",
             "title_seen": "Constant-Time Counting Filters with Fixed Counter Batches"
-          }
-        },
-        {
-          "title": "A High-Probability Seismic Bound for Treaps and its Applications to Dynamic Search Tree Navigation",
-          "authors": [
-            "Michael A. Bender",
-            "David Eppstein",
-            "Martín Farach-Colton",
-            "Michael T. Goodrich",
-            "Jingxun Liang",
-            "Michael Mitzenmacher",
-            "Robert E. Tarjan",
-            "Krzysztof Turowski"
-          ],
-          "overleaf": {
-            "project": "6976b57d6842b67ea287b19a",
-            "file": "main.tex",
-            "title_seen": "A High-Probability Seismic Bound for Treaps and its Applications to Dynamic Search Tree Navigation"
           }
         }
       ],
